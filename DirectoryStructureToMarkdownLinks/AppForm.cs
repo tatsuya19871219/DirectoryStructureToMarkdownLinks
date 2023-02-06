@@ -7,38 +7,43 @@ namespace DirectoryStructureToMarkdownLinks
         public AppForn()
         {
             InitializeComponent();
+
+            directoryTreeView.AfterCheck += DirectoryTreeView_AfterCheck;
+
+            OpenNewDirectory();
         }
 
         private void buttonSelectDir_Click(object sender, EventArgs e)
         {
-            // initialize
-            var dirname = "";
+            OpenNewDirectory();
+        }
+
+        private void OpenNewDirectory()
+        {
+            // Initialize directoryTreeView
             directoryTreeView.Nodes.Clear();
 
             // Open a directory.
             // Get the name and search the sub directories and files
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                dirname = folderBrowserDialog.SelectedPath;
+                var dirname = folderBrowserDialog.SelectedPath;
 
                 // Make tree of directory structure
                 TreeNode tree = new TreeNode(dirname);
-                
+
                 StoreDirectoryTree(dirname, tree);
-                
+
                 directoryTreeView.Nodes.Add(tree);
                 //directoryTreeView.ExpandAll();
 
                 tree.Expand();
                 //tree.Checked = true;
-                directoryTreeView.AfterCheck += DirectoryTreeView_AfterCheck;
 
                 // Make markdown list
-                UpdateMarkdownList(tree);
-
+                //UpdateMarkdownList(tree);
                 
             }
-
         }
 
         private void DirectoryTreeView_AfterCheck(object? sender, TreeViewEventArgs e)
@@ -46,7 +51,7 @@ namespace DirectoryStructureToMarkdownLinks
             if (e.Action == TreeViewAction.Unknown) return;
 
             TreeNode node = e.Node;
-            TreeNode tree = node.TreeView.TopNode;
+            TreeNode tree = node.TreeView.Nodes[0];
             TreeNode rootNode = tree;
 
             if (e.Node.Checked)
@@ -56,7 +61,8 @@ namespace DirectoryStructureToMarkdownLinks
                 if (node.Equals(rootNode))
                 {
                     // Check all children
-                    CheckAllChildren(rootNode.Nodes, true);
+                    //CheckAllChildren(rootNode.Nodes, true);
+                    CheckAllChildrenNonRecursive(rootNode, true);
 
                     //rootNode.Checked = false;
                 }
@@ -166,8 +172,9 @@ namespace DirectoryStructureToMarkdownLinks
         {
             var fullpath = node.FullPath;
             var rootpath = node.TreeView.Nodes[0].FullPath;
+            var rootdir = Path.GetFileName(rootpath); 
 
-            return fullpath.Replace(rootpath, ".").Replace("\\", "/");
+            return fullpath.Replace(rootpath, $"./{rootdir}").Replace("\\", "/");
         }
 
         void CheckAllChildren(TreeNodeCollection nodes, bool deep)
@@ -178,6 +185,33 @@ namespace DirectoryStructureToMarkdownLinks
 
                 if (deep) CheckAllChildren(node.Nodes, deep);
             }
+        }
+
+        // NonRecursive version of CheckAllChildren
+        void CheckAllChildrenNonRecursive(TreeNode parentNode, bool deep)
+        {
+            if (parentNode.Nodes.Count == 0) return;
+
+            Queue<TreeNode> staging = new Queue<TreeNode>();
+
+            TreeNode scanNode;
+
+            staging.Enqueue(parentNode);
+
+            do 
+            {
+                scanNode = staging.Dequeue();
+
+                if (scanNode != parentNode) scanNode.Checked = true;
+
+                foreach (TreeNode childNode in scanNode.Nodes)
+                {
+                    staging.Enqueue(childNode);
+                }
+
+
+            } while (staging.Count > 0);
+            
         }
 
         void UncheckAllChildren(TreeNodeCollection nodes, bool deep)
@@ -207,7 +241,43 @@ namespace DirectoryStructureToMarkdownLinks
             StoreMarkdownLinks(tree, list);
 
             textBox1.Lines = list.ToArray();
+
+            if (textBox1.Text != "")
+            {
+                buttonCopy.Enabled = true;
+                buttonRefresh.Enabled = true;
+            }
+            else
+            {
+                buttonCopy.Enabled = false;
+                buttonRefresh.Enabled = false;
+            }
         }
 
+        private void buttonCopy_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(textBox1.Text);
+
+            ShowActionMessageForWhile("Copied!");
+        }
+
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
+            UpdateMarkdownList(directoryTreeView.Nodes[0]);
+
+            ShowActionMessageForWhile("Refreshed!");
+        }
+
+
+        async void ShowActionMessageForWhile(string message)
+        {
+            labelMessage.Text = message;
+            labelMessage.Visible = true;
+
+            await Task.Delay(1000);
+
+            labelMessage.Visible = false;
+            labelMessage.Text = "";
+        }
     }
 }
