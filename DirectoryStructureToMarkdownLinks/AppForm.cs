@@ -10,7 +10,12 @@ namespace DirectoryStructureToMarkdownLinks
 
             directoryTreeView.AfterCheck += DirectoryTreeView_AfterCheck;
 
-            OpenNewDirectory();
+            //OpenNewDirectory();
+
+            buttonSelectDir.ForeColor = Color.Blue;
+
+            buttonGoUp.Enabled = false;
+            buttonGoDown.Enabled = false;
         }
 
         private void buttonSelectDir_Click(object sender, EventArgs e)
@@ -20,8 +25,6 @@ namespace DirectoryStructureToMarkdownLinks
 
         private void OpenNewDirectory()
         {
-            // Initialize directoryTreeView
-            directoryTreeView.Nodes.Clear();
 
             // Open a directory.
             // Get the name and search the sub directories and files
@@ -29,21 +32,49 @@ namespace DirectoryStructureToMarkdownLinks
             {
                 var dirname = folderBrowserDialog.SelectedPath;
 
-                // Make tree of directory structure
-                TreeNode tree = new TreeNode(dirname);
-
-                StoreDirectoryTree(dirname, tree);
-
-                directoryTreeView.Nodes.Add(tree);
-                //directoryTreeView.ExpandAll();
-
-                tree.Expand();
-                //tree.Checked = true;
-
-                // Make markdown list
-                //UpdateMarkdownList(tree);
-                
+                MoveToDirectory(dirname);
             }
+        }
+
+        async private void MoveToDirectory(string fullpath)
+        {
+            // Initialize directoryTreeView
+            directoryTreeView.Nodes.Clear();
+
+            // Make tree of directory structure
+            TreeNode tree = new TreeNode(fullpath);
+            
+            await StoreDirectoryTree(fullpath, tree);
+
+            directoryTreeView.Nodes.Add(tree);
+            //directoryTreeView.ExpandAll();
+
+            tree.Expand();
+            //tree.Checked = true;
+
+            // Make markdown list
+            //UpdateMarkdownList(tree);
+
+            buttonSelectDir.ForeColor = Color.Black;
+
+            // Check whether root directory has README.md
+            var hasReadme = HasReadme(tree);
+
+            buttonGoUp.Enabled = true;
+        }
+
+        private bool HasReadme(TreeNode tree)
+        {
+            foreach(TreeNode node in tree.Nodes)
+            {
+                if (node.Text == "README.md")
+                {
+                    node.ForeColor = Color.Green;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void DirectoryTreeView_AfterCheck(object? sender, TreeViewEventArgs e)
@@ -108,10 +139,14 @@ namespace DirectoryStructureToMarkdownLinks
             // update markdown links
             UpdateMarkdownList(tree);
 
+            buttonCopy.ForeColor = Color.Blue;
+
         }
 
-        void StoreDirectoryTree(string dirname, TreeNode tree)
+        async private Task StoreDirectoryTree(string dirname, TreeNode tree)
         {
+            //ShowActionMessageForWhile("Busy", 100);
+
             var dirs = Directory.EnumerateDirectories(dirname).ToList();
 
             foreach (var dir in dirs)
@@ -120,9 +155,7 @@ namespace DirectoryStructureToMarkdownLinks
 
                 var treeChild = tree.Nodes.Add(name);
 
-                
-
-                StoreDirectoryTree(dir, treeChild);
+                await StoreDirectoryTree(dir, treeChild);
             }
 
             var files = Directory.EnumerateFiles(dirname);
@@ -136,7 +169,7 @@ namespace DirectoryStructureToMarkdownLinks
 
         }
 
-        void StoreMarkdownLinks(TreeNode tree, List<string> list)
+        private void StoreMarkdownLinks(TreeNode tree, List<string> list)
         {
 
             foreach(TreeNode node in tree.Nodes)
@@ -168,16 +201,16 @@ namespace DirectoryStructureToMarkdownLinks
 
         }
 
-        string GetRelativeLink(TreeNode node)
+        private string GetRelativeLink(TreeNode node)
         {
             var fullpath = node.FullPath;
             var rootpath = node.TreeView.Nodes[0].FullPath;
             var rootdir = Path.GetFileName(rootpath); 
 
-            return fullpath.Replace(rootpath, $"./{rootdir}").Replace("\\", "/");
+            return fullpath.Replace(rootpath, $".").Replace("\\", "/");
         }
 
-        void CheckAllChildren(TreeNodeCollection nodes, bool deep)
+        private void CheckAllChildren(TreeNodeCollection nodes, bool deep)
         {
             foreach (TreeNode node in nodes)
             {
@@ -188,7 +221,7 @@ namespace DirectoryStructureToMarkdownLinks
         }
 
         // NonRecursive version of CheckAllChildren
-        void CheckAllChildrenNonRecursive(TreeNode parentNode, bool deep)
+        private void CheckAllChildrenNonRecursive(TreeNode parentNode, bool deep)
         {
             if (parentNode.Nodes.Count == 0) return;
 
@@ -214,7 +247,7 @@ namespace DirectoryStructureToMarkdownLinks
             
         }
 
-        void UncheckAllChildren(TreeNodeCollection nodes, bool deep)
+        private void UncheckAllChildren(TreeNodeCollection nodes, bool deep)
         {
             foreach (TreeNode node in nodes)
             {
@@ -224,7 +257,7 @@ namespace DirectoryStructureToMarkdownLinks
             }
         }
 
-        void CheckAllAncestors(TreeNode node)
+        private void CheckAllAncestors(TreeNode node)
         {
             if (node.Parent != null)
             {
@@ -234,15 +267,15 @@ namespace DirectoryStructureToMarkdownLinks
             }
         }
 
-        void UpdateMarkdownList(TreeNode tree)
+        private void UpdateMarkdownList(TreeNode tree)
         {
             List<string> list = new();
 
             StoreMarkdownLinks(tree, list);
 
-            textBox1.Lines = list.ToArray();
+            previewMarkdownLinks.Lines = list.ToArray();
 
-            if (textBox1.Text != "")
+            if (previewMarkdownLinks.Text != "")
             {
                 buttonCopy.Enabled = true;
                 buttonRefresh.Enabled = true;
@@ -256,7 +289,9 @@ namespace DirectoryStructureToMarkdownLinks
 
         private void buttonCopy_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(textBox1.Text);
+            Clipboard.SetText(previewMarkdownLinks.Text);
+
+            buttonCopy.ForeColor = Color.Black;
 
             ShowActionMessageForWhile("Copied!");
         }
@@ -269,15 +304,49 @@ namespace DirectoryStructureToMarkdownLinks
         }
 
 
-        async void ShowActionMessageForWhile(string message)
+        async private void ShowActionMessageForWhile(string message, int delay = 1000)
         {
             labelMessage.Text = message;
             labelMessage.Visible = true;
 
-            await Task.Delay(1000);
+            await Task.Delay(delay);
 
             labelMessage.Visible = false;
             labelMessage.Text = "";
+        }
+
+        private void buttonGoUp_Click(object sender, EventArgs e)
+        {
+            var currentRootdir = directoryTreeView.TopNode.FullPath;
+
+            var newRootdir = Path.GetDirectoryName(currentRootdir);
+
+            MoveToDirectory(newRootdir);
+        }
+
+        private void directoryTreeView_NodeClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            buttonGoDown.Enabled = false;
+
+            var lastSelectedNode = directoryTreeView.SelectedNode; // This is not clicked node
+            //if (lastSelectedNode != null) lastSelectedNode.BackColor = DefaultBackColor;
+
+            //// Left mouse button is clicked & directory with children nodes is selected 
+            if (e.Button == MouseButtons.Left & e.Node.Nodes.Count > 0)
+            {
+                buttonGoDown.Enabled = true;
+            //    e.Node.BackColor = Color.LightGoldenrodYellow;
+            //    if (lastSelectedNode != null) lastSelectedNode.BackColor = Color.Green;
+            }
+        }
+
+        private void buttonGoDown_Click(object sender, EventArgs e)
+        {
+            var currentRootdir = directoryTreeView.TopNode.FullPath;
+
+            var selectedRootdir = directoryTreeView.SelectedNode.FullPath;
+
+            MoveToDirectory(selectedRootdir);
         }
     }
 }
