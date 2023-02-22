@@ -28,60 +28,74 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.checkedListBoxSettings = new System.Windows.Forms.CheckedListBox();
+            this.labelMaxDepth = new System.Windows.Forms.Label();
+            this.autoChechMaxDepth = new System.Windows.Forms.NumericUpDown();
+            this.buttonApply = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.autoChechMaxDepth)).BeginInit();
             this.SuspendLayout();
             // 
-            // checkedListBox1
+            // checkedListBoxSettings
             // 
-            this.checkedListBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.checkedListBox1.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Items.AddRange(new object[] {
+            this.checkedListBoxSettings.BackColor = System.Drawing.SystemColors.Control;
+            this.checkedListBoxSettings.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.checkedListBoxSettings.FormattingEnabled = true;
+            this.checkedListBoxSettings.Items.AddRange(new object[] {
             "Allow to expand dot directories (.[dirname])",
             "Disable warning \'README.md is not found\'",
             "Enable auto checking when opening new directory"});
-            this.checkedListBox1.Location = new System.Drawing.Point(42, 34);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(385, 76);
-            this.checkedListBox1.TabIndex = 0;
+            this.checkedListBoxSettings.Location = new System.Drawing.Point(42, 34);
+            this.checkedListBoxSettings.Name = "checkedListBoxSettings";
+            this.checkedListBoxSettings.Size = new System.Drawing.Size(385, 76);
+            this.checkedListBoxSettings.TabIndex = 0;
             // 
-            // label1
+            // labelMaxDepth
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(60, 136);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(160, 21);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "AutoCheck MaxDepth";
+            this.labelMaxDepth.AutoSize = true;
+            this.labelMaxDepth.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelMaxDepth.Location = new System.Drawing.Point(60, 136);
+            this.labelMaxDepth.Name = "labelMaxDepth";
+            this.labelMaxDepth.Size = new System.Drawing.Size(160, 21);
+            this.labelMaxDepth.TabIndex = 1;
+            this.labelMaxDepth.Text = "AutoCheck MaxDepth";
             // 
-            // numericUpDown1
+            // autoChechMaxDepth
             // 
-            this.numericUpDown1.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.numericUpDown1.Location = new System.Drawing.Point(226, 134);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.autoChechMaxDepth.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.autoChechMaxDepth.Location = new System.Drawing.Point(226, 134);
+            this.autoChechMaxDepth.Maximum = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(42, 29);
-            this.numericUpDown1.TabIndex = 2;
+            this.autoChechMaxDepth.Name = "autoChechMaxDepth";
+            this.autoChechMaxDepth.Size = new System.Drawing.Size(42, 29);
+            this.autoChechMaxDepth.TabIndex = 2;
+            // 
+            // buttonApply
+            // 
+            this.buttonApply.AutoSize = true;
+            this.buttonApply.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.buttonApply.Location = new System.Drawing.Point(352, 131);
+            this.buttonApply.Name = "buttonApply";
+            this.buttonApply.Size = new System.Drawing.Size(75, 31);
+            this.buttonApply.TabIndex = 3;
+            this.buttonApply.Text = "Apply";
+            this.buttonApply.UseVisualStyleBackColor = true;
+            this.buttonApply.Click += new System.EventHandler(this.buttonApply_Click);
             // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(456, 178);
-            this.Controls.Add(this.numericUpDown1);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.checkedListBox1);
+            this.Controls.Add(this.buttonApply);
+            this.Controls.Add(this.autoChechMaxDepth);
+            this.Controls.Add(this.labelMaxDepth);
+            this.Controls.Add(this.checkedListBoxSettings);
             this.Name = "SettingsForm";
             this.Text = "Settings";
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.autoChechMaxDepth)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -89,8 +103,9 @@
 
         #endregion
 
-        private CheckedListBox checkedListBox1;
-        private Label label1;
-        private NumericUpDown numericUpDown1;
+        private CheckedListBox checkedListBoxSettings;
+        private Label labelMaxDepth;
+        private NumericUpDown autoChechMaxDepth;
+        private Button buttonApply;
     }
 }
