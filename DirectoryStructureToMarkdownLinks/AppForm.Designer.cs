@@ -1,6 +1,6 @@
 ﻿namespace DirectoryStructureToMarkdownLinks
 {
-    partial class AppForn
+    partial class AppForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -42,6 +42,7 @@
             this.buttonCopy = new System.Windows.Forms.Button();
             this.buttonSelectDir = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.buttonSetting = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -105,7 +106,6 @@
             this.directoryTreeView.Name = "directoryTreeView";
             this.directoryTreeView.Size = new System.Drawing.Size(295, 338);
             this.directoryTreeView.TabIndex = 0;
-            this.directoryTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.directoryTreeView_NodeClick);
             // 
             // groupBox3
             // 
@@ -150,6 +150,7 @@
             // groupBox1
             // 
             this.groupBox1.AutoSize = true;
+            this.groupBox1.Controls.Add(this.buttonSetting);
             this.groupBox1.Controls.Add(this.buttonGoDown);
             this.groupBox1.Controls.Add(this.buttonGoUp);
             this.groupBox1.Controls.Add(this.buttonRefresh);
@@ -207,7 +208,7 @@
             this.buttonCopy.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.buttonCopy.Enabled = false;
             this.buttonCopy.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.buttonCopy.Location = new System.Drawing.Point(463, 28);
+            this.buttonCopy.Location = new System.Drawing.Point(478, 28);
             this.buttonCopy.Name = "buttonCopy";
             this.buttonCopy.Size = new System.Drawing.Size(143, 31);
             this.buttonCopy.TabIndex = 1;
@@ -228,13 +229,24 @@
             this.buttonSelectDir.UseVisualStyleBackColor = true;
             this.buttonSelectDir.Click += new System.EventHandler(this.buttonSelectDir_Click);
             // 
-            // AppForn
+            // buttonSetting
+            // 
+            this.buttonSetting.AutoSize = true;
+            this.buttonSetting.Location = new System.Drawing.Point(341, 28);
+            this.buttonSetting.Name = "buttonSetting";
+            this.buttonSetting.Size = new System.Drawing.Size(131, 31);
+            this.buttonSetting.TabIndex = 5;
+            this.buttonSetting.Text = "Change settings";
+            this.buttonSetting.UseVisualStyleBackColor = true;
+            this.buttonSetting.Click += new System.EventHandler(this.buttonSetting_Click);
+            // 
+            // AppForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "AppForn";
+            this.Name = "AppForm";
             this.Text = "Directory Structure To Markdown Links";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -267,5 +279,6 @@
         private GroupBox groupBox3;
         private Button buttonGoDown;
         private Button buttonGoUp;
+        private Button buttonSetting;
     }
 }
