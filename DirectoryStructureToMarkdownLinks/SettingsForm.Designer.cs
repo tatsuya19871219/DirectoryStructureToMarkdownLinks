@@ -30,19 +30,19 @@
         {
             this.checkedListBoxSettings = new System.Windows.Forms.CheckedListBox();
             this.labelMaxDepth = new System.Windows.Forms.Label();
-            this.autoChechMaxDepth = new System.Windows.Forms.NumericUpDown();
+            this.autoCheckMaxDepth = new System.Windows.Forms.NumericUpDown();
             this.buttonApply = new System.Windows.Forms.Button();
             this.labelIgnoreDirs = new System.Windows.Forms.Label();
             this.labelIgnoreFiles = new System.Windows.Forms.Label();
             this.buttonAddIgnoreDir = new System.Windows.Forms.Button();
-            this.buttonButtonIgnoreDir = new System.Windows.Forms.Button();
+            this.buttonRemoveIgnoreDir = new System.Windows.Forms.Button();
             this.buttonRemoveIgnoreFile = new System.Windows.Forms.Button();
             this.buttonAddIgnoreFile = new System.Windows.Forms.Button();
             this.labelExplaination = new System.Windows.Forms.Label();
             this.listIgnoreDirs = new System.Windows.Forms.ListView();
             this.listIgnoreFiles = new System.Windows.Forms.ListView();
             this.buttonReset = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.autoChechMaxDepth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.autoCheckMaxDepth)).BeginInit();
             this.SuspendLayout();
             // 
             // checkedListBoxSettings
@@ -69,18 +69,18 @@
             this.labelMaxDepth.TabIndex = 1;
             this.labelMaxDepth.Text = "AutoCheck MaxDepth";
             // 
-            // autoChechMaxDepth
+            // autoCheckMaxDepth
             // 
-            this.autoChechMaxDepth.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.autoChechMaxDepth.Location = new System.Drawing.Point(223, 290);
-            this.autoChechMaxDepth.Maximum = new decimal(new int[] {
+            this.autoCheckMaxDepth.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.autoCheckMaxDepth.Location = new System.Drawing.Point(223, 290);
+            this.autoCheckMaxDepth.Maximum = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.autoChechMaxDepth.Name = "autoChechMaxDepth";
-            this.autoChechMaxDepth.Size = new System.Drawing.Size(42, 29);
-            this.autoChechMaxDepth.TabIndex = 2;
+            this.autoCheckMaxDepth.Name = "autoCheckMaxDepth";
+            this.autoCheckMaxDepth.Size = new System.Drawing.Size(42, 29);
+            this.autoCheckMaxDepth.TabIndex = 2;
             // 
             // buttonApply
             // 
@@ -123,14 +123,14 @@
             this.buttonAddIgnoreDir.Text = "Add";
             this.buttonAddIgnoreDir.UseVisualStyleBackColor = true;
             // 
-            // buttonButtonIgnoreDir
+            // buttonRemoveIgnoreDir
             // 
-            this.buttonButtonIgnoreDir.Location = new System.Drawing.Point(129, 140);
-            this.buttonButtonIgnoreDir.Name = "buttonButtonIgnoreDir";
-            this.buttonButtonIgnoreDir.Size = new System.Drawing.Size(75, 23);
-            this.buttonButtonIgnoreDir.TabIndex = 8;
-            this.buttonButtonIgnoreDir.Text = "Remove";
-            this.buttonButtonIgnoreDir.UseVisualStyleBackColor = true;
+            this.buttonRemoveIgnoreDir.Location = new System.Drawing.Point(129, 140);
+            this.buttonRemoveIgnoreDir.Name = "buttonRemoveIgnoreDir";
+            this.buttonRemoveIgnoreDir.Size = new System.Drawing.Size(75, 23);
+            this.buttonRemoveIgnoreDir.TabIndex = 8;
+            this.buttonRemoveIgnoreDir.Text = "Remove";
+            this.buttonRemoveIgnoreDir.UseVisualStyleBackColor = true;
             // 
             // buttonRemoveIgnoreFile
             // 
@@ -173,7 +173,7 @@
             this.listIgnoreDirs.TileSize = new System.Drawing.Size(150, 15);
             this.listIgnoreDirs.UseCompatibleStateImageBehavior = false;
             this.listIgnoreDirs.View = System.Windows.Forms.View.Tile;
-            this.listIgnoreDirs.DoubleClick += new System.EventHandler(this.listIgnoreDirs_DoubleClick);
+            //this.listIgnoreDirs.DoubleClick += new System.EventHandler(this.listIgnoreDirs_DoubleClick);
             // 
             // listIgnoreFiles
             // 
@@ -197,7 +197,7 @@
             this.buttonReset.TabIndex = 16;
             this.buttonReset.Text = "Reset";
             this.buttonReset.UseVisualStyleBackColor = true;
-            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
+            //this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
             // 
             // SettingsForm
             // 
@@ -210,17 +210,17 @@
             this.Controls.Add(this.labelExplaination);
             this.Controls.Add(this.buttonRemoveIgnoreFile);
             this.Controls.Add(this.buttonAddIgnoreFile);
-            this.Controls.Add(this.buttonButtonIgnoreDir);
+            this.Controls.Add(this.buttonRemoveIgnoreDir);
             this.Controls.Add(this.buttonAddIgnoreDir);
             this.Controls.Add(this.labelIgnoreFiles);
             this.Controls.Add(this.labelIgnoreDirs);
             this.Controls.Add(this.buttonApply);
-            this.Controls.Add(this.autoChechMaxDepth);
+            this.Controls.Add(this.autoCheckMaxDepth);
             this.Controls.Add(this.labelMaxDepth);
             this.Controls.Add(this.checkedListBoxSettings);
             this.Name = "SettingsForm";
             this.Text = "Settings";
-            ((System.ComponentModel.ISupportInitialize)(this.autoChechMaxDepth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.autoCheckMaxDepth)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -230,12 +230,12 @@
 
         private CheckedListBox checkedListBoxSettings;
         private Label labelMaxDepth;
-        private NumericUpDown autoChechMaxDepth;
+        private NumericUpDown autoCheckMaxDepth;
         private Button buttonApply;
         private Label labelIgnoreDirs;
         private Label labelIgnoreFiles;
         private Button buttonAddIgnoreDir;
-        private Button buttonButtonIgnoreDir;
+        private Button buttonRemoveIgnoreDir;
         private Button buttonRemoveIgnoreFile;
         private Button buttonAddIgnoreFile;
         private Label labelExplaination;

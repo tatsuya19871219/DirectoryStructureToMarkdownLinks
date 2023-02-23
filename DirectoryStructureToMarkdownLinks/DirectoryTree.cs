@@ -23,9 +23,14 @@ namespace DirectoryStructureToMarkdownLinks
 
         readonly SettingsManager _manager;
 
-        StringCollection _ignoreDirs => _manager[SettingKeys.IgnoreDirs] as StringCollection ?? new StringCollection();
-        StringCollection _ignoreFiles => _manager[SettingKeys.IgnoreFiles] as StringCollection ?? new StringCollection();
+        //StringCollection _ignoreDirs //=> _manager[SettingKeys.IgnoreDirs] as StringCollection ?? new StringCollection();
 
+        //StringCollection _ignoreFiles //=> _manager[SettingKeys.IgnoreFiles] as StringCollection ?? new StringCollection();
+
+        ListRegex _ignoreDirsRegex 
+            => new ListRegex(_manager.Get<StringCollection>(SettingKeys.IgnoreDirs));
+        ListRegex _ignoreFilesRegex
+            => new ListRegex(_manager.Get<StringCollection>(SettingKeys.IgnoreFiles));
 
         public DirectoryTree(string rootpath, TreeView treeView) 
         {
@@ -139,7 +144,7 @@ namespace DirectoryStructureToMarkdownLinks
             //if (!allowDotDirExpand & IsDotDir(parentNode)) return;
             //else 
             // Check ignore directory list
-            if (_ignoreDirs.Contains(parentNode.Text)) return;
+            if (_ignoreDirsRegex.Contains(parentNode.Text)) return;
 
             parentNode.Expand();
 
@@ -220,7 +225,7 @@ namespace DirectoryStructureToMarkdownLinks
         private void CheckAllChildren(TreeNode parentNode)
         {
             // Check ignore directory list
-            if (_ignoreDirs.Contains(parentNode.Text)) return;
+            if (_ignoreDirsRegex.Contains(parentNode.Text)) return;
 
             parentNode.Checked = true;
 
@@ -237,7 +242,7 @@ namespace DirectoryStructureToMarkdownLinks
                 if (!IsFileItem(node)) CheckAllChildren(node);
                 else
                 {
-                    if (!_ignoreFiles.Contains(node.Text))
+                    if (!_ignoreFilesRegex.Contains(node.Text))
                         node.Checked = true;
                 }
             }

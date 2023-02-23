@@ -6,7 +6,7 @@ note left of SettingKeys
     Keys of properties here
 end note
 
-SettingsManager -left-> SettingKeys
+SettingsManager --> SettingKeys
 class SettingsManager
 {
 '{static} - instance : SettingsManager
@@ -19,7 +19,7 @@ class SettingsManager
 + Save() : void
 + Reset() : void
 }
-note right of SettingsManager::PropertyIndexer
+note left of SettingsManager::PropertyIndexer
     Indexer of property
 end note
 
@@ -45,6 +45,7 @@ class AppForm << (F, #00ffff) >>
 }
 
 SettingsForm --> SettingsManager
+SettingsForm --> ListViewEditor
 class SettingsForm << (F, #00ffff) >>
 {
     - manager : SettingsManager {read only}
@@ -97,6 +98,16 @@ class MarkdownLinks
     + Generate() : List<string>
     - StoreMarkdownLinks(tree : TreeNode, list : List<string>) : void
     - GetRelativeLink(node : TreeNode) : string
+}
+
+class ListViewEditor
+{
+    - addButton : Button
+    - removeButton : Button
+    - listView : ListView
+    '
+    + ListViewEditor(listView : ListView, addButton : Button, removeButton : Button)
+    + ToList() : List<string>
 }
 
 @enduml

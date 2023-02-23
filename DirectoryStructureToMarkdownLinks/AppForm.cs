@@ -10,7 +10,8 @@ namespace DirectoryStructureToMarkdownLinks
         readonly SettingsManager _manager;
 
         bool _readmeNotificationEnable
-                => (bool)_manager[SettingKeys.ReadmeEnabled];
+                //=> (bool)_manager[SettingKeys.ReadmeEnabled];
+                => _manager.Get<bool>(SettingKeys.ReadmeEnabled);
 
         public AppForm()
         {
