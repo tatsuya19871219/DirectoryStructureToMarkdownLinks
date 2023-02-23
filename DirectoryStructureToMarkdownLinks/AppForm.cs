@@ -4,13 +4,13 @@ namespace DirectoryStructureToMarkdownLinks
 {
     public partial class AppForm : Form
     {
-        
+
+        DirectoryTree _directoryTree;
+        MarkdownLinks _markdownLinks;
 
         public AppForm()
         {
             InitializeComponent();
-
-            //directoryTreeView.AfterCheck += DirectoryTreeView_AfterCheck;
 
             //OpenNewDirectory();
 
@@ -21,31 +21,6 @@ namespace DirectoryStructureToMarkdownLinks
 
         }
 
-        //void TreeGeneratorBackgroundWork(object sender, DoWorkEventArgs e)
-        //{
-        //    BackgroundWorker worker = sender as BackgroundWorker;
-
-        //    //(string fullpath, TreeNode _tree) = e.Argument as Tuple<string, TreeNode>;
-
-        //    var directoryTree = (DirectoryTree)e.Argument;
-
-        //    //directoryTree.Append();
-            
-        //    //TreeNode _tree = new TreeNode(fullpath);
-
-        //    //GenerateTree(fullpath, _tree, worker, e);
-
-        //    //e.Result = directoryTree.node;
-
-        //    //TreeNode _tree = (TreeNode)e.Result;
-
-        //    //directoryTreeView.Nodes.Add(_tree); // this also takes time
-
-        //    //_tree.Expand();
-
-        //    //// Check whether root directory has README.md
-        //    //var hasReadme = HasReadme(_tree);
-        //}
 
         //void TreeGeneratorCompleted(object sender, RunWorkerCompletedEventArgs e)
         //{
@@ -93,135 +68,77 @@ namespace DirectoryStructureToMarkdownLinks
             }
         }
 
-        async private void MoveToDirectory(string fullpath)
+        private void MoveToDirectory(string fullpath)
         {
+            _directoryTree = new DirectoryTree(fullpath, directoryTreeView);
 
-            // Initialize directoryTreeView
-            directoryTreeView.Nodes.Clear();
+            //_directoryTree.Append();
+            _directoryTree.Expand(2);
 
-            //labelLoading.Visible = true;
-            //progressBarLoad.Value = 0;
-            //progressBarLoad.Visible = true;
+            //_directoryTree.BindTreeView(directoryTreeView);
 
-            var directoryTree = new DirectoryTree(fullpath);
+            bool hasReamdmeAtRoot = _directoryTree.HasReadme();
 
-            directoryTree.Append(2);
+            // Tree Go Up enable?
+            if (_directoryTree.TryGetParentDir(out var dir)) buttonGoUp.Enabled = true;
+            else buttonGoUp.Enabled = false;
 
-            //backgroundDirectoryTreeGenerator.RunWorkerAsync(directoryTree);
-            
+            buttonGoDown.Enabled = false;
+
         }
 
-        
 
-        //private void DirectoryTreeView_AfterCheck(object? sender, TreeViewEventArgs e)
-        //{
-        //    if (e.Action == TreeViewAction.Unknown) return;
+        /// <summary>
+        /// Append directory tree before expanding
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DirectoryTreeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            TreeNode node = e.Node;
 
-        //    TreeNode node = e.Node;
-        //    TreeNode _tree = node.TreeView.Nodes[0];
-        //    TreeNode rootNode = _tree;
+            _directoryTree.Append(node);
+        }
 
-        //    if (e.Node.Checked)
-        //    {
-        //        // if root node is checked, check all node
-        //        // and unckeck self
-        //        if (node.Equals(rootNode))
-        //        {
-        //            // Check all children
-        //            //CheckAllChildren(rootNode.Nodes, true);
-        //            CheckAllChildrenNonRecursive(rootNode, true);
 
-        //            //rootNode.Checked = false;
-        //        }
-        //        else
-        //        {
-        //            // If directory, check all children
-        //            if (node.Nodes.Count > 0)
-        //            {
-        //                CheckAllChildren(node.Nodes, false);
-        //                CheckAllAncestors(node);
 
-        //                node.Expand();
-        //            }
-        //            else
-        //            {
-        //                // if parent node (directory) is not checked,
-        //                // check all ancestors
-        //                CheckAllAncestors(node);
-        //            }
-        //        }
-                
-        //    }
-        //    else
-        //    {
-        //        if (node.Equals(rootNode))
-        //        {
-        //            // Unheck all children
-        //            UncheckAllChildren(rootNode.Nodes, true);
+        private void DirectoryTreeView_AfterCheck(object? sender, TreeViewEventArgs e)
+        {
+            if (e.Action == TreeViewAction.Unknown) return;
 
-        //        }
-        //        else
-        //        {
-        //            if (node.Nodes.Count > 0)
-        //            {
-        //                //
-        //                UncheckAllChildren(node.Nodes, true);
+            TreeNode node = e.Node;
 
-        //                //node.Collapse();
-        //            }
-        //        }
-        //    }
+            if (node.Checked)
+            {
+                _directoryTree.Check(node);
+                _directoryTree.Expand(node);
+            }
+            else
+            {
+                _directoryTree.Uncheck(node);
+                _directoryTree.Collaspe(node);
+            }
 
-        //    // update markdown links
-        //    UpdateMarkdownList(_tree);
+           
+            // update markdown links
+            //UpdateMarkdownList(_tree);
 
-        //    buttonCopy.ForeColor = Color.Blue;
+            buttonCopy.ForeColor = Color.Blue;
 
-        //}
+        }
 
-        //private void DirectoryTreeView_NodeClick(object sender, TreeNodeMouseClickEventArgs e)
-        //{
-        //    buttonGoDown.Enabled = false;
+        private void DirectoryTreeView_NodeClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            TreeNode node = e.Node;
 
-        //    var lastSelectedNode = directoryTreeView.SelectedNode; // This is not clicked node
-        //    //if (lastSelectedNode != null) lastSelectedNode.BackColor = DefaultBackColor;
+            // Left mouse button is clicked 
+            if (e.Button == MouseButtons.Left) _directoryTree.Click(node);
 
-        //    //// Left mouse button is clicked & directory with children nodes is selected 
-        //    if (e.Button == MouseButtons.Left & e.Node.Nodes.Count > 0)
-        //    {
-        //        buttonGoDown.Enabled = true;
-        //        //    e.Node.BackColor = Color.LightGoldenrodYellow;
-        //        //    if (lastSelectedNode != null) lastSelectedNode.BackColor = Color.Green;
-        //    }
-        //}
+            if (!_directoryTree.IsFileItem(node)) buttonGoDown.Enabled = true;
+            else buttonGoDown.Enabled = false;
+        }
 
-        //async private Task StoreDirectoryTree(string dirname, TreeNode _tree)
-        //{
-        //    //ShowActionMessageForWhile("Busy", 100);
 
-        //    var dirs = Directory.EnumerateDirectories(dirname).ToList();
-
-        //    foreach (var dir in dirs)
-        //    {
-        //        var name = Path.GetFileName(dir);
-
-        //        var treeChild = _tree.Nodes.Add(name);
-
-        //        await StoreDirectoryTree(dir, treeChild);
-        //    }
-
-        //    var files = Directory.EnumerateFiles(dirname);
-
-        //    foreach (var file in files)
-        //    {
-        //        var name = Path.GetFileName(file);
-
-        //        _tree.Nodes.Add(name);
-        //    }
-
-        //}
-
-        
 
         private void UpdateMarkdownList(TreeNode tree)
         {
@@ -244,7 +161,7 @@ namespace DirectoryStructureToMarkdownLinks
         }
 
 
-        // UI 
+        // UI callbacks 
         private void buttonSelectDir_Click(object sender, EventArgs e)
         {
             OpenNewDirectory();
@@ -265,19 +182,13 @@ namespace DirectoryStructureToMarkdownLinks
         }   
         private void buttonGoUp_Click(object sender, EventArgs e)
         {
-            var currentRootdir = directoryTreeView.TopNode.FullPath;
-
-            var newRootdir = Path.GetDirectoryName(currentRootdir);
-
-            MoveToDirectory(newRootdir);
+            if (_directoryTree.TryGetParentDir(out string newRootdir))
+                MoveToDirectory(newRootdir);
         }
         private void buttonGoDown_Click(object sender, EventArgs e)
         {
-            var currentRootdir = directoryTreeView.TopNode.FullPath;
-
-            var selectedRootdir = directoryTreeView.SelectedNode.FullPath;
-
-            MoveToDirectory(selectedRootdir);
+            if (_directoryTree.TryGetSelectedDir(out string newRootdir))
+                MoveToDirectory(newRootdir);
         }
 
         // 

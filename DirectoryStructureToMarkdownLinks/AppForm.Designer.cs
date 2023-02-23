@@ -36,13 +36,13 @@
             this.labelMessage = new System.Windows.Forms.Label();
             this.previewMarkdownLinks = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonSetting = new System.Windows.Forms.Button();
             this.buttonGoDown = new System.Windows.Forms.Button();
             this.buttonGoUp = new System.Windows.Forms.Button();
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.buttonCopy = new System.Windows.Forms.Button();
             this.buttonSelectDir = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.buttonSetting = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -106,6 +106,9 @@
             this.directoryTreeView.Name = "directoryTreeView";
             this.directoryTreeView.Size = new System.Drawing.Size(295, 338);
             this.directoryTreeView.TabIndex = 0;
+            this.directoryTreeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.DirectoryTreeView_BeforeExpand);
+            this.directoryTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.DirectoryTreeView_NodeClick);
+            this.directoryTreeView.AfterCheck += new TreeViewEventHandler(this.DirectoryTreeView_AfterCheck);
             // 
             // groupBox3
             // 
@@ -164,6 +167,17 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Operation";
+            // 
+            // buttonSetting
+            // 
+            this.buttonSetting.AutoSize = true;
+            this.buttonSetting.Location = new System.Drawing.Point(341, 28);
+            this.buttonSetting.Name = "buttonSetting";
+            this.buttonSetting.Size = new System.Drawing.Size(131, 31);
+            this.buttonSetting.TabIndex = 5;
+            this.buttonSetting.Text = "Change settings";
+            this.buttonSetting.UseVisualStyleBackColor = true;
+            this.buttonSetting.Click += new System.EventHandler(this.buttonSetting_Click);
             // 
             // buttonGoDown
             // 
@@ -228,17 +242,6 @@
             this.buttonSelectDir.Text = "Select a directory";
             this.buttonSelectDir.UseVisualStyleBackColor = true;
             this.buttonSelectDir.Click += new System.EventHandler(this.buttonSelectDir_Click);
-            // 
-            // buttonSetting
-            // 
-            this.buttonSetting.AutoSize = true;
-            this.buttonSetting.Location = new System.Drawing.Point(341, 28);
-            this.buttonSetting.Name = "buttonSetting";
-            this.buttonSetting.Size = new System.Drawing.Size(131, 31);
-            this.buttonSetting.TabIndex = 5;
-            this.buttonSetting.Text = "Change settings";
-            this.buttonSetting.UseVisualStyleBackColor = true;
-            this.buttonSetting.Click += new System.EventHandler(this.buttonSetting_Click);
             // 
             // AppForm
             // 

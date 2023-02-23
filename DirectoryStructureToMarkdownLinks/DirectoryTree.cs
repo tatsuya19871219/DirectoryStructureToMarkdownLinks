@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace DirectoryStructureToMarkdownLinks
 {
@@ -12,46 +13,65 @@ namespace DirectoryStructureToMarkdownLinks
         readonly string _rootpath;
         readonly TreeNode _tree;
 
-        public DirectoryTree(string rootpath) 
+        readonly string _dummy = "This Is Dummy Item";
+        readonly string _securityDummy = "Access Denied";
+
+        TreeNode _clickedDirNode; // for go up operation
+
+        //bool _isTreeViewBound = false;
+
+        public DirectoryTree(string rootpath, TreeView treeView) 
         { 
+            
             _rootpath = rootpath;
             _tree = new TreeNode(rootpath);
+            _tree.Nodes.Add(_dummy); // To Expand function works fine
+
+            BindTreeView(treeView);
         }
 
-        public void Append(int depth = 1)
-        {
-            Append(_tree, depth);
-        }
 
-        public void Append(TreeNode node, int depth)
+        //public void Append(int depth = 1) => Append(_tree, depth);
+
+        public void Append(TreeNode node, int depth = 1)
         {
             // Is valid node?
             if (!IsValidNode(node)) throw new ArgumentException("Unexpected node is given.");
 
+            //// Is File?
+            //if (IsFileItem(node)) return;
+
+            // Is already append?
+            if (IsAlreadyAppend(node)) return;
+
+            node.Nodes.Clear();
+
             string dirname = GetPath(node);
 
-            var dirs = Directory.EnumerateDirectories(dirname).ToList();
+            try
+            {
+                var tmp = Directory.EnumerateDirectories(dirname);
+            }
+            catch (Exception ex)
+            {
+                node.Nodes.Add(_securityDummy).ForeColor = Color.Red;
+                return;
+                //throw new SystemException("Accessibility exception");
+            }
 
-            //int N = dirs.Count;
-            //int i = 0;
+            var dirs = Directory.EnumerateDirectories(dirname).ToList();
 
             foreach (var dir in dirs)
             {
                 var name = Path.GetFileName(dir);
 
-                var treeChild = _tree.Nodes.Add(name);
+                var treeChild = node.Nodes.Add(name);
 
-                //GenerateTree(dir, treeChild, worker, e);
-                if (depth > 1) Append(treeChild, depth - 1);
+                if (depth > 1) 
+                    Append(treeChild, depth - 1);
+                else 
+                    treeChild.Nodes.Add(_dummy);
             }
-            //i++;
-
-            //    if (_tree.Parent == null)
-            //    {
-            //        // update progress
-            //        worker.ReportProgress((int)((float)i / N * 100));
-            //    }
-            //}
 
             var files = Directory.EnumerateFiles(dirname);
 
@@ -59,79 +79,172 @@ namespace DirectoryStructureToMarkdownLinks
             {
                 var name = Path.GetFileName(file);
 
-                _tree.Nodes.Add(name);
+                node.Nodes.Add(name);
             }
             
         }
 
+        private bool IsAlreadyAppend(TreeNode node)
+        {
+            if (IsFileItem(node)) return false;
+
+            if (node.Nodes[0].Text == _dummy) return false;
+
+            return true;
+        }
+
+        public bool IsFileItem(TreeNode node)
+            => (node.Nodes.Count == 0) ? true : false;
+
         private bool IsValidNode(TreeNode node)
         {
             if (node.Level == 0)
-            {
                 return node.Equals(_tree);
-            }
             else
-            {
                 return IsValidNode(node.Parent);
-            }
         }
 
         private string GetPath(TreeNode node)
         {
             if (node.Level == 0)
-            {
                 return node.Text;
-            }
             else
+                return Path.Combine(GetPath(node.Parent), node.Text);
+        }
+
+        private void BindTreeView(TreeView treeView)
+        {
+            treeView.Nodes.Clear();
+            treeView.Nodes.Add(_tree);
+            //_isTreeViewBound = true;
+        }
+
+        public void Expand(int depth = 1) => Expand(_tree, depth);
+
+        public void Expand(TreeNode parentNode, int depth = 1)
+        {
+            if (depth == 0) return;
+            if (!IsValidNode(parentNode)) throw new ArgumentException("Unexpected node is given.");
+
+            parentNode.Expand();
+
+            foreach (TreeNode node in parentNode.Nodes)
             {
-                return GetPath(node.Parent) + "/" + node.Text;
+                if (!IsFileItem(node)) Expand(node, depth-1);
             }
         }
 
-        private void CheckAllChildren(TreeNodeCollection nodes, bool deep)
+        public void Collaspe(TreeNode node)
         {
-            foreach (TreeNode node in nodes)
+            if (!IsValidNode(node)) throw new ArgumentException("Unexpected node is given.");
+
+            node.Collapse();
+        }
+
+        public void Click(TreeNode node)
+        {
+            if (!IsValidNode(node)) throw new ArgumentException("Unexpected node is given.");
+
+            if (_clickedDirNode != null) _clickedDirNode.BackColor = Color.White;
+
+            if (IsFileItem(node))
+            {
+                _clickedDirNode = null;
+                return;
+            }
+            else
+            {
+                node.BackColor = Color.LightBlue;
+                _clickedDirNode = node;
+            }
+
+        }
+
+        public bool TryGetParentDir(out string dir)
+        {
+            dir = Path.GetDirectoryName(_tree.FullPath);
+
+            if (dir == null) return false;
+            else return true;
+        }
+
+        public bool TryGetSelectedDir(out string dir)
+        {
+            dir = _clickedDirNode?.FullPath;
+
+            if (dir == null) return false;
+            else return true;
+        }
+
+        public void Check(TreeNode node)
+        {
+            if (!IsFileItem(node))
+            {
+                CheckAllChildren(node);
+            }
+            
+            CheckAllAncestors(node);
+        }
+
+        public void Uncheck(TreeNode node)
+        {
+            if (IsFileItem(node)) return;
+            else
+            {
+                UncheckAllChildren(node);
+            }
+        }
+
+        private void CheckAllChildren(TreeNode parentNode)
+        {
+            if (!IsFileItem(parentNode))
+            {
+                Append(parentNode);
+                //Expand(parentNode);
+            }
+
+            foreach (TreeNode node in parentNode.Nodes)
             {
                 node.Checked = true;
 
-                if (deep) CheckAllChildren(node.Nodes, deep);
+                if(!IsFileItem(node)) CheckAllChildren(node);
             }
         }
 
         // NonRecursive version of CheckAllChildren
-        private void CheckAllChildrenNonRecursive(TreeNode parentNode, bool deep)
+        //private void CheckAllChildrenNonRecursive(TreeNode parentNode, bool deep)
+        //{
+        //    if (parentNode.Nodes.Count == 0) return;
+
+        //    Queue<TreeNode> staging = new Queue<TreeNode>();
+
+        //    TreeNode scanNode;
+
+        //    staging.Enqueue(parentNode);
+
+        //    do
+        //    {
+        //        scanNode = staging.Dequeue();
+
+        //        if (scanNode != parentNode) scanNode.Checked = true;
+
+        //        foreach (TreeNode childNode in scanNode.Nodes)
+        //        {
+        //            staging.Enqueue(childNode);
+        //        }
+
+
+        //    } while (staging.Count > 0);
+
+        //}
+
+        private void UncheckAllChildren(TreeNode parentNode)
         {
-            if (parentNode.Nodes.Count == 0) return;
-
-            Queue<TreeNode> staging = new Queue<TreeNode>();
-
-            TreeNode scanNode;
-
-            staging.Enqueue(parentNode);
-
-            do
-            {
-                scanNode = staging.Dequeue();
-
-                if (scanNode != parentNode) scanNode.Checked = true;
-
-                foreach (TreeNode childNode in scanNode.Nodes)
-                {
-                    staging.Enqueue(childNode);
-                }
-
-
-            } while (staging.Count > 0);
-
-        }
-
-        private void UncheckAllChildren(TreeNodeCollection nodes, bool deep)
-        {
-            foreach (TreeNode node in nodes)
+            foreach (TreeNode node in parentNode.Nodes)
             {
                 node.Checked = false;
 
-                if (deep) UncheckAllChildren(node.Nodes, deep);
+                UncheckAllChildren(node);
             }
         }
 
@@ -145,6 +258,7 @@ namespace DirectoryStructureToMarkdownLinks
             }
         }
 
+        public bool HasReadme() => HasReadme(_tree);
         private bool HasReadme(TreeNode tree)
         {
             foreach (TreeNode node in tree.Nodes)
@@ -159,43 +273,6 @@ namespace DirectoryStructureToMarkdownLinks
             return false;
         }
 
-        
-        void GenerateTree(string dirname, TreeNode tree, BackgroundWorker worker, DoWorkEventArgs e)
-        {
-
-            var dirs = Directory.EnumerateDirectories(dirname).ToList();
-
-            int N = dirs.Count;
-            int i = 0;
-
-            foreach (var dir in dirs)
-            {
-                var name = Path.GetFileName(dir);
-
-                var treeChild = tree.Nodes.Add(name);
-
-                GenerateTree(dir, treeChild, worker, e);
-
-                i++;
-
-                if (tree.Parent == null)
-                {
-                    // update progress
-                    worker.ReportProgress((int)((float)i / N * 100));
-                }
-            }
-
-            var files = Directory.EnumerateFiles(dirname);
-
-            foreach (var file in files)
-            {
-                var name = Path.GetFileName(file);
-
-                tree.Nodes.Add(name);
-            }
-
-            //return _tree;
-        }
 
     }
 }
