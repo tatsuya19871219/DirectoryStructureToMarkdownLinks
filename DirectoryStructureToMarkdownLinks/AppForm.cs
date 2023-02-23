@@ -7,6 +7,7 @@ namespace DirectoryStructureToMarkdownLinks
 
         DirectoryTree _directoryTree;
         MarkdownLinks _markdownLinks;
+        readonly SettingsManager _manager;
 
         public AppForm()
         {
@@ -14,46 +15,14 @@ namespace DirectoryStructureToMarkdownLinks
 
             //OpenNewDirectory();
 
+            _manager = SettingsManager.Current;
+
             buttonSelectDir.ForeColor = Color.Blue;
 
             buttonGoUp.Enabled = false;
             buttonGoDown.Enabled = false;
 
         }
-
-
-        //void TreeGeneratorCompleted(object sender, RunWorkerCompletedEventArgs e)
-        //{
-        //    TreeNode tree = (TreeNode)e.Result;
-
-        //    directoryTreeView.Nodes.Add(tree); // this also takes time
-            
-        //    progressBarLoad.Visible = false;
-        //    labelLoading.Visible = false;
-
-        //    //directoryTreeView.ExpandAll();
-
-        //    tree.Expand();
-
-        //    //_tree.Checked = true;
-
-        //    // Make markdown list
-        //    //UpdateMarkdownList(_tree);
-
-        //    buttonSelectDir.ForeColor = Color.Black;
-
-        //    // Check whether root directory has README.md
-        //    //var hasReadme = HasReadme(_tree);
-
-        //    buttonGoUp.Enabled = true;
-        //}
-
-        //void TreeGerenatorProgressChanged(object sender, ProgressChangedEventArgs e)
-        //{
-        //    this.progressBarLoad.Value = e.ProgressPercentage;
-        //}
-
-        
 
         private void OpenNewDirectory()
         {
@@ -72,18 +41,29 @@ namespace DirectoryStructureToMarkdownLinks
         {
             _directoryTree = new DirectoryTree(fullpath, directoryTreeView);
 
-            //_directoryTree.Append();
-            _directoryTree.Expand(2);
+            _markdownLinks = new MarkdownLinks(_directoryTree);
 
-            //_directoryTree.BindTreeView(directoryTreeView);
-
-            bool hasReamdmeAtRoot = _directoryTree.HasReadme();
+            _directoryTree.Expand((int)_manager[SettingKeys.AutoCheckMaxDepth], false);
 
             // Tree Go Up enable?
             if (_directoryTree.TryGetParentDir(out var dir)) buttonGoUp.Enabled = true;
             else buttonGoUp.Enabled = false;
 
             buttonGoDown.Enabled = false;
+
+
+            bool hasReamdmeAtRoot = _directoryTree.HasReadme();
+
+            if (!hasReamdmeAtRoot)
+            {
+                var result = MessageBox.Show("README.md is not found at first level.", 
+                                                "Notification", MessageBoxButtons.OKCancel);
+
+                if (result == DialogResult.Cancel)
+                {
+                    OpenNewDirectory(); return;
+                }
+            }
 
         }
 
@@ -99,7 +79,6 @@ namespace DirectoryStructureToMarkdownLinks
 
             _directoryTree.Append(node);
         }
-
 
 
         private void DirectoryTreeView_AfterCheck(object? sender, TreeViewEventArgs e)
@@ -119,9 +98,22 @@ namespace DirectoryStructureToMarkdownLinks
                 _directoryTree.Collaspe(node);
             }
 
-           
+
             // update markdown links
-            //UpdateMarkdownList(_tree);
+            previewMarkdownLinks.Lines = _markdownLinks.Generate().ToArray();
+             
+                //_markdownLinks
+
+            if (previewMarkdownLinks.Text != "")
+            {
+                buttonCopy.Enabled = true;
+                buttonRefresh.Enabled = true;
+            }
+            else
+            {
+                buttonCopy.Enabled = false;
+                buttonRefresh.Enabled = false;
+            }
 
             buttonCopy.ForeColor = Color.Blue;
 
@@ -140,26 +132,6 @@ namespace DirectoryStructureToMarkdownLinks
 
 
 
-        private void UpdateMarkdownList(TreeNode tree)
-        {
-            List<string> list = new();
-
-            //StoreMarkdownLinks(_tree, list);
-
-            previewMarkdownLinks.Lines = list.ToArray();
-
-            if (previewMarkdownLinks.Text != "")
-            {
-                buttonCopy.Enabled = true;
-                buttonRefresh.Enabled = true;
-            }
-            else
-            {
-                buttonCopy.Enabled = false;
-                buttonRefresh.Enabled = false;
-            }
-        }
-
 
         // UI callbacks 
         private void buttonSelectDir_Click(object sender, EventArgs e)
@@ -176,7 +148,7 @@ namespace DirectoryStructureToMarkdownLinks
         }
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
-            UpdateMarkdownList(directoryTreeView.Nodes[0]);
+            //UpdateMarkdownList(directoryTreeView.Nodes[0]);
 
             ShowActionMessageForWhile("Refreshed!");
         }   

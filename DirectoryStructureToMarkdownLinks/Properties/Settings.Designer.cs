@@ -25,7 +25,7 @@ namespace DirectoryStructureToMarkdownLinks.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int AutoCheckMaxDepth {
             get {
                 return ((int)(this["AutoCheckMaxDepth"]));

@@ -30,6 +30,8 @@ namespace DirectoryStructureToMarkdownLinks
             BindTreeView(treeView);
         }
 
+        public TreeNode RootNode => _tree;
+
 
         //public void Append(int depth = 1) => Append(_tree, depth);
 
@@ -119,19 +121,26 @@ namespace DirectoryStructureToMarkdownLinks
             //_isTreeViewBound = true;
         }
 
-        public void Expand(int depth = 1) => Expand(_tree, depth);
+        public void Expand(int depth = 1, bool allowDotDirExpand = false) => Expand(_tree, depth, allowDotDirExpand);
 
-        public void Expand(TreeNode parentNode, int depth = 1)
+        public void Expand(TreeNode parentNode, int depth = 1, bool allowDotDirExpand = true)
         {
             if (depth == 0) return;
             if (!IsValidNode(parentNode)) throw new ArgumentException("Unexpected node is given.");
 
-            parentNode.Expand();
+            if (!allowDotDirExpand & IsDotDir(parentNode)) return;
+            else parentNode.Expand();
 
             foreach (TreeNode node in parentNode.Nodes)
             {
-                if (!IsFileItem(node)) Expand(node, depth-1);
+                if (!IsFileItem(node)) Expand(node, depth-1, allowDotDirExpand);
             }
+        }
+
+        private bool IsDotDir(TreeNode node)
+        {
+            if (node.Text.StartsWith(".")) return true;
+            else return false;
         }
 
         public void Collaspe(TreeNode node)

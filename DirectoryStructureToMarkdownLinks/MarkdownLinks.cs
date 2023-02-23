@@ -3,12 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
 
 namespace DirectoryStructureToMarkdownLinks
 {
     internal class MarkdownLinks
     {
         readonly int _tabwidth = 4;
+
+        readonly DirectoryTree _tree;
+
+        public MarkdownLinks(DirectoryTree tree) 
+        { 
+            _tree = tree;
+        }
+
+
+        public List<string> Generate()
+        {
+            List<string> list = new();
+
+            StoreMarkdownLinks(_tree.RootNode, list);
+
+            return list;
+        }
+
 
         private void StoreMarkdownLinks(TreeNode tree, List<string> list)
         {
