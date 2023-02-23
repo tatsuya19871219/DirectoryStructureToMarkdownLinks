@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -16,12 +17,19 @@ namespace DirectoryStructureToMarkdownLinks
         readonly string _dummy = "This Is Dummy Item";
         readonly string _securityDummy = "Access Denied";
 
-        TreeNode _clickedDirNode; // for go up operation
+        TreeNode? _clickedDirNode = null; // for go up operation
 
         //bool _isTreeViewBound = false;
 
+        readonly SettingsManager _manager;
+
+        StringCollection _ignoreDirs => _manager[SettingKeys.IgnoreDirs] as StringCollection ?? new StringCollection();
+        StringCollection _ignoreFiles => _manager[SettingKeys.IgnoreFiles] as StringCollection ?? new StringCollection();
+
+
         public DirectoryTree(string rootpath, TreeView treeView) 
-        { 
+        {
+            _manager = SettingsManager.Current;
             
             _rootpath = rootpath;
             _tree = new TreeNode(rootpath);
@@ -41,7 +49,7 @@ namespace DirectoryStructureToMarkdownLinks
             if (!IsValidNode(node)) throw new ArgumentException("Unexpected node is given.");
 
             //// Is File?
-            //if (IsFileItem(node)) return;
+            if (IsFileItem(node)) return;
 
             // Is already append?
             if (IsAlreadyAppend(node)) return;
@@ -118,30 +126,34 @@ namespace DirectoryStructureToMarkdownLinks
         {
             treeView.Nodes.Clear();
             treeView.Nodes.Add(_tree);
-            //_isTreeViewBound = true;
         }
 
-        public void Expand(int depth = 1, bool allowDotDirExpand = false) => Expand(_tree, depth, allowDotDirExpand);
+        public void Expand(int depth = 1) => Expand(_tree, depth);
 
-        public void Expand(TreeNode parentNode, int depth = 1, bool allowDotDirExpand = true)
+        public void Expand(TreeNode parentNode, int depth = 1)
         {
             if (depth == 0) return;
+            if (IsFileItem(parentNode)) return;
             if (!IsValidNode(parentNode)) throw new ArgumentException("Unexpected node is given.");
 
-            if (!allowDotDirExpand & IsDotDir(parentNode)) return;
-            else parentNode.Expand();
+            //if (!allowDotDirExpand & IsDotDir(parentNode)) return;
+            //else 
+            // Check ignore directory list
+            if (_ignoreDirs.Contains(parentNode.Text)) return;
+
+            parentNode.Expand();
 
             foreach (TreeNode node in parentNode.Nodes)
             {
-                if (!IsFileItem(node)) Expand(node, depth-1, allowDotDirExpand);
+                if (!IsFileItem(node)) Expand(node, depth-1);
             }
         }
 
-        private bool IsDotDir(TreeNode node)
-        {
-            if (node.Text.StartsWith(".")) return true;
-            else return false;
-        }
+        //private bool IsDotDir(TreeNode node)
+        //{
+        //    if (node.Text.StartsWith(".")) return true;
+        //    else return false;
+        //}
 
         public void Collaspe(TreeNode node)
         {
@@ -190,6 +202,7 @@ namespace DirectoryStructureToMarkdownLinks
             if (!IsFileItem(node))
             {
                 CheckAllChildren(node);
+                //CheckAllChildrenNonRecursive(node);
             }
             
             CheckAllAncestors(node);
@@ -206,6 +219,11 @@ namespace DirectoryStructureToMarkdownLinks
 
         private void CheckAllChildren(TreeNode parentNode)
         {
+            // Check ignore directory list
+            if (_ignoreDirs.Contains(parentNode.Text)) return;
+
+            parentNode.Checked = true;
+
             if (!IsFileItem(parentNode))
             {
                 Append(parentNode);
@@ -214,38 +232,45 @@ namespace DirectoryStructureToMarkdownLinks
 
             foreach (TreeNode node in parentNode.Nodes)
             {
-                node.Checked = true;
+                //node.Checked = true;
 
-                if(!IsFileItem(node)) CheckAllChildren(node);
+                if (!IsFileItem(node)) CheckAllChildren(node);
+                else
+                {
+                    if (!_ignoreFiles.Contains(node.Text))
+                        node.Checked = true;
+                }
             }
         }
 
         // NonRecursive version of CheckAllChildren
-        //private void CheckAllChildrenNonRecursive(TreeNode parentNode, bool deep)
-        //{
-        //    if (parentNode.Nodes.Count == 0) return;
+        private void CheckAllChildrenNonRecursive(TreeNode parentNode)
+        {
+            if (parentNode.Nodes.Count == 0) return;
 
-        //    Queue<TreeNode> staging = new Queue<TreeNode>();
+            Queue<TreeNode> staging = new Queue<TreeNode>();
 
-        //    TreeNode scanNode;
+            TreeNode scanNode;
 
-        //    staging.Enqueue(parentNode);
+            staging.Enqueue(parentNode);
 
-        //    do
-        //    {
-        //        scanNode = staging.Dequeue();
+            do
+            {
+                scanNode = staging.Dequeue();
 
-        //        if (scanNode != parentNode) scanNode.Checked = true;
+                Append(scanNode);
 
-        //        foreach (TreeNode childNode in scanNode.Nodes)
-        //        {
-        //            staging.Enqueue(childNode);
-        //        }
+                if (scanNode != parentNode) scanNode.Checked = true;
+
+                foreach (TreeNode childNode in scanNode.Nodes)
+                {
+                    staging.Enqueue(childNode);
+                }
 
 
-        //    } while (staging.Count > 0);
+            } while (staging.Count > 0);
 
-        //}
+        }
 
         private void UncheckAllChildren(TreeNode parentNode)
         {

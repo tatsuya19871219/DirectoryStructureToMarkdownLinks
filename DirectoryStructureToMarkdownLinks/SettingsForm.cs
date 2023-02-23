@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -27,6 +28,8 @@ namespace DirectoryStructureToMarkdownLinks
 
         void LoadSettings()
         {
+            _checkedListOrderedKey.Clear();
+
             autoChechMaxDepth.Value = (int)_manager[SettingKeys.AutoCheckMaxDepth];
             
             checkedListBoxSettings.Items.Clear();
@@ -34,6 +37,16 @@ namespace DirectoryStructureToMarkdownLinks
             AddCheckedListItem(SettingKeys.DotDirAllowed);
             AddCheckedListItem(SettingKeys.ReadmeEnabled);
             AddCheckedListItem(SettingKeys.AutoCheckEnabled);
+
+            listIgnoreDirs.Items.Clear();
+            var ignoreDirs = (StringCollection)_manager[SettingKeys.IgnoreDirs];
+            foreach ( var ignoreDir in ignoreDirs ) listIgnoreDirs.Items.Add(ignoreDir);
+
+            listIgnoreFiles.Items.Clear();
+            var ignoreFiles = (StringCollection)_manager[SettingKeys.IgnoreFiles];
+            foreach (var ignoreFile in ignoreFiles) listIgnoreFiles.Items.Add(ignoreFile);
+
+
         }
 
         void AddCheckedListItem(string key)
@@ -56,11 +69,41 @@ namespace DirectoryStructureToMarkdownLinks
                 _manager[_checkedListOrderedKey[i]] = checkedListBoxSettings.GetItemChecked(i);
             }
 
+            var ignoreDirs = new StringCollection();
+            foreach ( ListViewItem ignoreDirItem in listIgnoreDirs.Items)
+            {
+                ignoreDirs.Add(ignoreDirItem.Text);
+            }
+
             // Save
             _manager.Save();
 
             // Close form
             this.Close();
+        }
+
+        //private void listIgnoreDirs_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    listIgnoreDirs.
+        //}
+
+        // Callbacks
+        private void listIgnoreDirs_DoubleClick(object sender, EventArgs e)
+        {
+            ListViewItem item = (sender as ListView).FocusedItem;
+
+            item.BeginEdit();
+        }
+
+        private void listIgnoreDire_KeyDown(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void buttonReset_Click(object sender, EventArgs e)
+        {
+            _manager.Reset();
+            LoadSettings();
         }
     }
 }

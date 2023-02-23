@@ -9,6 +9,9 @@ namespace DirectoryStructureToMarkdownLinks
         MarkdownLinks _markdownLinks;
         readonly SettingsManager _manager;
 
+        bool _readmeNotificationEnable
+                => (bool)_manager[SettingKeys.ReadmeEnabled];
+
         public AppForm()
         {
             InitializeComponent();
@@ -43,28 +46,34 @@ namespace DirectoryStructureToMarkdownLinks
 
             _markdownLinks = new MarkdownLinks(_directoryTree);
 
-            _directoryTree.Expand((int)_manager[SettingKeys.AutoCheckMaxDepth], false);
+            //_directoryTree.Expand((int)_manager[SettingKeys.AutoCheckMaxDepth], false);
+            _directoryTree.Expand();
 
             // Tree Go Up enable?
-            if (_directoryTree.TryGetParentDir(out var dir)) buttonGoUp.Enabled = true;
+            if (_directoryTree.TryGetParentDir(out var _)) buttonGoUp.Enabled = true;
             else buttonGoUp.Enabled = false;
 
             buttonGoDown.Enabled = false;
 
-
             bool hasReamdmeAtRoot = _directoryTree.HasReadme();
 
-            if (!hasReamdmeAtRoot)
+            if (_readmeNotificationEnable) WarningReadmeIsLacked(hasReamdmeAtRoot);
+
+        }
+
+
+        void WarningReadmeIsLacked(bool hasReamdme)
+        {
+            if (!hasReamdme)
             {
                 var result = MessageBox.Show("README.md is not found at first level.", 
                                                 "Notification", MessageBoxButtons.OKCancel);
 
                 if (result == DialogResult.Cancel)
                 {
-                    OpenNewDirectory(); return;
+                    OpenNewDirectory(); 
                 }
             }
-
         }
 
 
@@ -98,12 +107,9 @@ namespace DirectoryStructureToMarkdownLinks
                 _directoryTree.Collaspe(node);
             }
 
-
-            // update markdown links
+            // Update markdown links
             previewMarkdownLinks.Lines = _markdownLinks.Generate().ToArray();
              
-                //_markdownLinks
-
             if (previewMarkdownLinks.Text != "")
             {
                 buttonCopy.Enabled = true;
@@ -175,9 +181,14 @@ namespace DirectoryStructureToMarkdownLinks
             labelMessage.Text = "";
         }
 
-        private void buttonSetting_Click(object sender, EventArgs e)
+        async private void buttonSetting_Click(object sender, EventArgs e)
         {
-            Task.Run(() => Application.Run(new SettingsForm()));
+            this.Enabled = false;
+
+            await Task.Run(() => Application.Run(new SettingsForm()));
+
+            this.Enabled = true;
+            this.Activate();
         }
     }
 }

@@ -13,6 +13,8 @@ namespace DirectoryStructureToMarkdownLinks
         public static string DotDirAllowed = "DotDirExpandAllowed";
         public static string ReadmeEnabled = "ReadmeNotificationEnabled";
         public static string AutoCheckEnabled = "AutoCheckInOpen";
+        public static string IgnoreDirs = "IgnoreDirs";
+        public static string IgnoreFiles = "IgnoreFiles";
     }
 
     internal class SettingsManager
@@ -50,6 +52,9 @@ namespace DirectoryStructureToMarkdownLinks
             _keys.Add(SettingKeys.DotDirAllowed);
             _keys.Add(SettingKeys.ReadmeEnabled);
             _keys.Add(SettingKeys.AutoCheckEnabled);
+
+            _keys.Add(SettingKeys.IgnoreDirs);
+            _keys.Add(SettingKeys.IgnoreFiles);
         }
 
         private object Get(string key)
@@ -67,6 +72,11 @@ namespace DirectoryStructureToMarkdownLinks
         public void Save()
         {
             _settings.Save();
+        }
+
+        public void Reset()
+        {
+            _settings.Reset();
         }
     }
 }
