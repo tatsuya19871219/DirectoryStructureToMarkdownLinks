@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 
 namespace DirectoryStructureToMarkdownLinks
 {
@@ -22,11 +16,11 @@ namespace DirectoryStructureToMarkdownLinks
     {
 
         private static SettingsManager _instance = null;
-        public static SettingsManager Current 
+        public static SettingsManager Current
         {
             get
             {
-                if (_instance == null) 
+                if (_instance == null)
                     _instance = new SettingsManager();
 
                 return _instance;
@@ -45,7 +39,7 @@ namespace DirectoryStructureToMarkdownLinks
 
         readonly private Dictionary<string, Type> _types = new();
 
-        private SettingsManager() 
+        private SettingsManager()
         {
             _settings = Properties.Settings.Default;
 
@@ -57,7 +51,7 @@ namespace DirectoryStructureToMarkdownLinks
             _keys.Add(SettingKeys.IgnoreDirs);
             _keys.Add(SettingKeys.IgnoreFiles);
 
-            foreach(SettingsProperty prop in _settings.Properties)
+            foreach (SettingsProperty prop in _settings.Properties)
             {
                 // Store property types
                 string keyProp = prop.Name;
@@ -79,7 +73,7 @@ namespace DirectoryStructureToMarkdownLinks
             if (!_keys.Contains(key)) throw new ArgumentException("Unlisted key is given");
             if (typeof(T) != _types[key]) throw new InvalidCastException("Type mismatch.");
 
-            return (T) _settings[key];
+            return (T)_settings[key];
         }
 
 

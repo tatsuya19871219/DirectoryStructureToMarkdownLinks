@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using System.Collections.Specialized;
 
 namespace DirectoryStructureToMarkdownLinks
 {
@@ -27,15 +20,15 @@ namespace DirectoryStructureToMarkdownLinks
 
         //StringCollection _ignoreFiles //=> _manager[SettingKeys.IgnoreFiles] as StringCollection ?? new StringCollection();
 
-        ListRegex _ignoreDirsRegex 
+        ListRegex _ignoreDirsRegex
             => new ListRegex(_manager.Get<StringCollection>(SettingKeys.IgnoreDirs));
         ListRegex _ignoreFilesRegex
             => new ListRegex(_manager.Get<StringCollection>(SettingKeys.IgnoreFiles));
 
-        public DirectoryTree(string rootpath, TreeView treeView) 
+        public DirectoryTree(string rootpath, TreeView treeView)
         {
             _manager = SettingsManager.Current;
-            
+
             _rootpath = rootpath;
             _tree = new TreeNode(rootpath);
             _tree.Nodes.Add(_dummy); // To Expand function works fine
@@ -82,9 +75,9 @@ namespace DirectoryStructureToMarkdownLinks
 
                 var treeChild = node.Nodes.Add(name);
 
-                if (depth > 1) 
+                if (depth > 1)
                     Append(treeChild, depth - 1);
-                else 
+                else
                     treeChild.Nodes.Add(_dummy);
             }
 
@@ -96,7 +89,7 @@ namespace DirectoryStructureToMarkdownLinks
 
                 node.Nodes.Add(name);
             }
-            
+
         }
 
         private bool IsAlreadyAppend(TreeNode node)
@@ -150,7 +143,7 @@ namespace DirectoryStructureToMarkdownLinks
 
             foreach (TreeNode node in parentNode.Nodes)
             {
-                if (!IsFileItem(node)) Expand(node, depth-1);
+                if (!IsFileItem(node)) Expand(node, depth - 1);
             }
         }
 
@@ -209,7 +202,7 @@ namespace DirectoryStructureToMarkdownLinks
                 CheckAllChildren(node);
                 //CheckAllChildrenNonRecursive(node);
             }
-            
+
             CheckAllAncestors(node);
         }
 

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms.VisualStyles;
-
-namespace DirectoryStructureToMarkdownLinks
+﻿namespace DirectoryStructureToMarkdownLinks
 {
     internal class MarkdownLinks
     {
@@ -13,8 +6,8 @@ namespace DirectoryStructureToMarkdownLinks
 
         readonly DirectoryTree _tree;
 
-        public MarkdownLinks(DirectoryTree tree) 
-        { 
+        public MarkdownLinks(DirectoryTree tree)
+        {
             _tree = tree;
         }
 

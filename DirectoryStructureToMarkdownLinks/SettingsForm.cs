@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Collections.Specialized;
 
 namespace DirectoryStructureToMarkdownLinks
 {
@@ -43,7 +33,7 @@ namespace DirectoryStructureToMarkdownLinks
             _checkedListOrderedKey.Clear();
 
             autoCheckMaxDepth.Value = _manager.Get<int>(SettingKeys.AutoCheckMaxDepth);
-            
+
             checkedListBoxSettings.Items.Clear();
 
             //AddCheckedListItem(SettingKeys.DotDirAllowed);
@@ -65,7 +55,7 @@ namespace DirectoryStructureToMarkdownLinks
             {
                 var _ = new ListRegex(ignoreDirs);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show("Please check Ignore Directories list\n" + ex.Message, "Notification", MessageBoxButtons.OK);
                 return false;
@@ -77,7 +67,7 @@ namespace DirectoryStructureToMarkdownLinks
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Please check Ignore Files list\n" + ex.Message , "Notification", MessageBoxButtons.OK);
+                MessageBox.Show("Please check Ignore Files list\n" + ex.Message, "Notification", MessageBoxButtons.OK);
                 return false;
             }
 
@@ -121,7 +111,7 @@ namespace DirectoryStructureToMarkdownLinks
 
         private void buttonReset_Click(object sender, EventArgs e)
         {
-            LoadSettings();            
+            LoadSettings();
         }
 
         private void buttonDefault_Click(object sender, EventArgs e)

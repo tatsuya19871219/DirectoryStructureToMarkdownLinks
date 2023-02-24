@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Specialized;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace DirectoryStructureToMarkdownLinks
 {
@@ -12,15 +7,15 @@ namespace DirectoryStructureToMarkdownLinks
     {
         readonly List<Regex> _regexes = new();
 
-        public ListRegex(StringCollection collection) 
+        public ListRegex(StringCollection collection)
         {
-            foreach(string item in collection)
+            foreach (string item in collection)
             {
                 try
                 {
                     _regexes.Add(new Regex(item));
                 }
-                catch (Exception ex)  
+                catch (Exception ex)
                 {
                     throw new Exception(ex.Message);
                 }
@@ -31,7 +26,7 @@ namespace DirectoryStructureToMarkdownLinks
         {
             //bool reslut = false;
 
-            foreach(Regex regex in _regexes)
+            foreach (Regex regex in _regexes)
             {
                 if (regex.Match(key).Success) return true;
             }

@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 namespace DirectoryStructureToMarkdownLinks
 {
     public partial class AppForm : Form
@@ -73,12 +71,12 @@ namespace DirectoryStructureToMarkdownLinks
         {
             if (!hasReamdme)
             {
-                var result = MessageBox.Show("README.md is not found at first level.", 
+                var result = MessageBox.Show("README.md is not found at first level.",
                                                 "Notification", MessageBoxButtons.OKCancel);
 
                 if (result == DialogResult.Cancel)
                 {
-                    OpenNewDirectory(); 
+                    OpenNewDirectory();
                 }
             }
         }
@@ -116,7 +114,7 @@ namespace DirectoryStructureToMarkdownLinks
 
             // Update markdown links
             previewMarkdownLinks.Lines = _markdownLinks.Generate().ToArray();
-             
+
             if (previewMarkdownLinks.Text != "")
             {
                 buttonCopy.Enabled = true;

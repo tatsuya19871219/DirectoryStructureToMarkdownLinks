@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Specialized;
 
 namespace DirectoryStructureToMarkdownLinks
 {
@@ -50,8 +45,8 @@ namespace DirectoryStructureToMarkdownLinks
             foreach (ListViewItem item in _listView.Items)
             {
                 string itemString = item.Text;
-                if (!collection.Contains(itemString)) 
-                        collection.Add(itemString);
+                if (!collection.Contains(itemString))
+                    collection.Add(itemString);
             }
 
             return collection;
@@ -67,7 +62,7 @@ namespace DirectoryStructureToMarkdownLinks
         void removeClicked(object sender, EventArgs e)
         {
             if (_selectedItem == null) return;
-            
+
             _listView.Items.Remove(_selectedItem);
         }
 
