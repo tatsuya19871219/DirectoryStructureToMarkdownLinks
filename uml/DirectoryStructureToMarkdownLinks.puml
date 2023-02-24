@@ -41,6 +41,7 @@ class AppForm << (F, #00ffff) >>
     - markdownLinks : MarkdownLinks
     - manager : SettingsManager {read only}
     '
+    + AppForm()
     - OpenNewDirectory() : void
     - MoveToDirectory(fullpath : string) : void
 
@@ -52,8 +53,9 @@ class SettingsForm << (F, #00ffff) >>
 {
     - manager : SettingsManager {read only}
     '
-    - LoadSettings()
-    - SaveSettings()
+    + SettingsForm()
+    - LoadSettings() : void
+    - SaveSettings() : bool
 }
 
 DirectoryTree --> SettingsManager
@@ -106,9 +108,12 @@ class MarkdownLinks
 
 class ListViewEditor
 {
-    - addButton : Button
-    - removeButton : Button
-    - listView : ListView
+    - addButton : Button {read only}
+    - removeButton : Button {read only}
+    - listView : ListView {read only}
+    '
+    - placeholder : string {read only}
+    - selectedItem : ListViewItem?
     '
     + ListViewEditor(listView : ListView, addButton : Button, removeButton : Button)
     + Set(collection : StringCollection?) : void
@@ -125,7 +130,3 @@ class ListRegex
 }
 
 @enduml
-
-' @startuml AB
-' Alice -> Bob
-' @enduml
