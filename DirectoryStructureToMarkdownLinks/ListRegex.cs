@@ -16,7 +16,14 @@ namespace DirectoryStructureToMarkdownLinks
         {
             foreach(string item in collection)
             {
-                _regexes.Add(new Regex(item));
+                try
+                {
+                    _regexes.Add(new Regex(item));
+                }
+                catch (Exception ex)  
+                {
+                    throw new Exception(ex.Message);
+                }
             }
         }
 

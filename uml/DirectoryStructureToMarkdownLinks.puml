@@ -11,17 +11,19 @@ class SettingsManager
 {
 '{static} - instance : SettingsManager
 {static} + Current : SettingsManager
-+ this[key : string] : object as PropertyIndexer
+' + this[key : string] : object as PropertyIndexer
 - setting : Properties.Settings {read only}
+- keys : List<string> {read only}
+- types : Dictionary<string, Type> {read only}
 - SettingsManager
-+ Get(key : string) : object
-+ Set(key : string, value : object) : void
++ Get<T>(key : string) : T
++ Set<T>(key : string, value : T) : void
 + Save() : void
 + Reset() : void
 }
-note left of SettingsManager::PropertyIndexer
-    Indexer of property
-end note
+' note left of SettingsManager::PropertyIndexer
+'     Indexer of property
+' end note
 
 ' AppForm -up-|> Form
 ' SettingsForm -up-|> Form
@@ -55,6 +57,7 @@ class SettingsForm << (F, #00ffff) >>
 }
 
 DirectoryTree --> SettingsManager
+DirectoryTree --> ListRegex
 class DirectoryTree
 {
     - rootpath : string {read only}
@@ -100,6 +103,7 @@ class MarkdownLinks
     - GetRelativeLink(node : TreeNode) : string
 }
 
+
 class ListViewEditor
 {
     - addButton : Button
@@ -107,7 +111,17 @@ class ListViewEditor
     - listView : ListView
     '
     + ListViewEditor(listView : ListView, addButton : Button, removeButton : Button)
-    + ToList() : List<string>
+    + Set(collection : StringCollection?) : void
+    + Get() : StringCollection
+}
+
+
+class ListRegex
+{
+    - regexes : List<Regex> {read only}
+
+    + ListRegex(collection : StringCollection)
+    + Contains(key : string) : bool
 }
 
 @enduml

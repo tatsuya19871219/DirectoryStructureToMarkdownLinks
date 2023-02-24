@@ -11,7 +11,7 @@ namespace DirectoryStructureToMarkdownLinks
     static class SettingKeys
     {
         public static string AutoCheckMaxDepth = "AutoCheckMaxDepth";
-        public static string DotDirAllowed = "DotDirExpandAllowed";
+        //public static string DotDirAllowed = "DotDirExpandAllowed";
         public static string ReadmeEnabled = "ReadmeNotificationEnabled";
         public static string AutoCheckEnabled = "AutoCheckInOpen";
         public static string IgnoreDirs = "IgnoreDirs";
@@ -50,7 +50,7 @@ namespace DirectoryStructureToMarkdownLinks
             _settings = Properties.Settings.Default;
 
             _keys.Add(SettingKeys.AutoCheckMaxDepth);
-            _keys.Add(SettingKeys.DotDirAllowed);
+            //_keys.Add(SettingKeys.DotDirAllowed);
             _keys.Add(SettingKeys.ReadmeEnabled);
             _keys.Add(SettingKeys.AutoCheckEnabled);
 
@@ -73,29 +73,19 @@ namespace DirectoryStructureToMarkdownLinks
 
         }
 
-        private object Get(string key)
-        {
-            if (!_keys.Contains(key)) throw new ArgumentException("Unlisted key is given");
-
-            return _settings[key];
-        }
 
         public T Get<T>(string key)
         {
+            if (!_keys.Contains(key)) throw new ArgumentException("Unlisted key is given");
             if (typeof(T) != _types[key]) throw new InvalidCastException("Type mismatch.");
 
-            object obj = Get(key);
-
-            return (T)obj;
+            return (T) _settings[key];
         }
 
-        //private void Set(string key, object value)
-        //{
-        //    _settings[key] = value;
-        //}
 
         public void Set<T>(string key, T value)
         {
+            if (!_keys.Contains(key)) throw new ArgumentException("Unlisted key is given");
             if (typeof(T) != _types[key]) throw new InvalidCastException("Type mismatch.");
 
             _settings[key] = value;

@@ -37,18 +37,6 @@ namespace DirectoryStructureToMarkdownLinks.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DotDirExpandAllowed {
-            get {
-                return ((bool)(this["DotDirExpandAllowed"]));
-            }
-            set {
-                this["DotDirExpandAllowed"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool ReadmeNotificationEnabled {
             get {

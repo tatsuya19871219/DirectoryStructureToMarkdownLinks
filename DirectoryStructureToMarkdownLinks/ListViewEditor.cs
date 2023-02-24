@@ -13,6 +13,10 @@ namespace DirectoryStructureToMarkdownLinks
         readonly Button _removeButton;
         readonly ListView _listView;
 
+        readonly string _placeholder = "=====";
+
+        ListViewItem? _selectedItem = null;
+
         public ListViewEditor(ListView listView, Button addButton, Button removeButton)
         {
             _addButton = addButton;
@@ -20,10 +24,17 @@ namespace DirectoryStructureToMarkdownLinks
             _listView = listView;
 
             // Set callback functions
+            _addButton.Click += new EventHandler(addClicked);
+            _removeButton.Click += new EventHandler(removeClicked);
+
+            _listView.DoubleClick += new EventHandler(listDoubleClicked);
+            _listView.ItemSelectionChanged += new ListViewItemSelectionChangedEventHandler(listSelectionChanged);
         }
 
         public void Set(StringCollection? collection)
         {
+            _listView.Items.Clear();
+
             if (collection == null) return;
 
             foreach (string item in collection)
@@ -36,12 +47,41 @@ namespace DirectoryStructureToMarkdownLinks
         {
             var collection = new StringCollection();
 
-            foreach (string item in _listView.Items)
+            foreach (ListViewItem item in _listView.Items)
             {
-                collection.Add(item);
+                string itemString = item.Text;
+                if (!collection.Contains(itemString)) 
+                        collection.Add(itemString);
             }
 
             return collection;
+        }
+
+
+        // Callbacks
+        void addClicked(object sender, EventArgs e)
+        {
+            _listView.Items.Add(_placeholder);
+        }
+
+        void removeClicked(object sender, EventArgs e)
+        {
+            if (_selectedItem == null) return;
+            
+            _listView.Items.Remove(_selectedItem);
+        }
+
+        void listDoubleClicked(object sender, EventArgs e)
+        {
+            ListViewItem item = (sender as ListView).FocusedItem;
+
+            item.BeginEdit();
+        }
+
+        void listSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected) _selectedItem = e.Item;
+            else _selectedItem = null;
         }
     }
 }

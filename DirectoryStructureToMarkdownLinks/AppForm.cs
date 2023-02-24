@@ -10,8 +10,10 @@ namespace DirectoryStructureToMarkdownLinks
         readonly SettingsManager _manager;
 
         bool _readmeNotificationEnable
-                //=> (bool)_manager[SettingKeys.ReadmeEnabled];
                 => _manager.Get<bool>(SettingKeys.ReadmeEnabled);
+
+        int _autoExpandDepth
+                => _manager.Get<int>(SettingKeys.AutoCheckMaxDepth);
 
         public AppForm()
         {
@@ -47,8 +49,8 @@ namespace DirectoryStructureToMarkdownLinks
 
             _markdownLinks = new MarkdownLinks(_directoryTree);
 
-            //_directoryTree.Expand((int)_manager[SettingKeys.AutoCheckMaxDepth], false);
-            _directoryTree.Expand();
+            _directoryTree.Expand(_autoExpandDepth);
+            //_directoryTree.Expand();
 
             // Tree Go Up enable?
             if (_directoryTree.TryGetParentDir(out var _)) buttonGoUp.Enabled = true;
