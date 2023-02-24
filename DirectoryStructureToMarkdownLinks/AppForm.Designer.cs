@@ -39,7 +39,6 @@
             this.buttonSetting = new System.Windows.Forms.Button();
             this.buttonGoDown = new System.Windows.Forms.Button();
             this.buttonGoUp = new System.Windows.Forms.Button();
-            this.buttonRefresh = new System.Windows.Forms.Button();
             this.buttonCopy = new System.Windows.Forms.Button();
             this.buttonSelectDir = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
@@ -106,9 +105,9 @@
             this.directoryTreeView.Name = "directoryTreeView";
             this.directoryTreeView.Size = new System.Drawing.Size(295, 338);
             this.directoryTreeView.TabIndex = 0;
+            this.directoryTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.DirectoryTreeView_AfterCheck);
             this.directoryTreeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.DirectoryTreeView_BeforeExpand);
             this.directoryTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.DirectoryTreeView_NodeClick);
-            this.directoryTreeView.AfterCheck += new TreeViewEventHandler(this.DirectoryTreeView_AfterCheck);
             // 
             // groupBox3
             // 
@@ -125,11 +124,10 @@
             // 
             // labelMessage
             // 
-            this.labelMessage.AutoSize = true;
             this.labelMessage.BackColor = System.Drawing.Color.Transparent;
             this.labelMessage.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.labelMessage.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelMessage.Location = new System.Drawing.Point(359, 25);
+            this.labelMessage.Location = new System.Drawing.Point(352, 25);
             this.labelMessage.Name = "labelMessage";
             this.labelMessage.Size = new System.Drawing.Size(106, 21);
             this.labelMessage.TabIndex = 1;
@@ -156,7 +154,6 @@
             this.groupBox1.Controls.Add(this.buttonSetting);
             this.groupBox1.Controls.Add(this.buttonGoDown);
             this.groupBox1.Controls.Add(this.buttonGoUp);
-            this.groupBox1.Controls.Add(this.buttonRefresh);
             this.groupBox1.Controls.Add(this.buttonCopy);
             this.groupBox1.Controls.Add(this.buttonSelectDir);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -171,7 +168,7 @@
             // buttonSetting
             // 
             this.buttonSetting.AutoSize = true;
-            this.buttonSetting.Location = new System.Drawing.Point(341, 28);
+            this.buttonSetting.Location = new System.Drawing.Point(657, 28);
             this.buttonSetting.Name = "buttonSetting";
             this.buttonSetting.Size = new System.Drawing.Size(131, 31);
             this.buttonSetting.TabIndex = 5;
@@ -200,21 +197,6 @@
             this.buttonGoUp.Text = "Go up";
             this.buttonGoUp.UseVisualStyleBackColor = true;
             this.buttonGoUp.Click += new System.EventHandler(this.buttonGoUp_Click);
-            // 
-            // buttonRefresh
-            // 
-            this.buttonRefresh.AutoSize = true;
-            this.buttonRefresh.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.buttonRefresh.Enabled = false;
-            this.buttonRefresh.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.buttonRefresh.Location = new System.Drawing.Point(697, 28);
-            this.buttonRefresh.Name = "buttonRefresh";
-            this.buttonRefresh.Size = new System.Drawing.Size(73, 31);
-            this.buttonRefresh.TabIndex = 2;
-            this.buttonRefresh.Text = "Refresh";
-            this.buttonRefresh.UseVisualStyleBackColor = true;
-            this.buttonRefresh.Visible = false;
-            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
             // 
             // buttonCopy
             // 
@@ -275,7 +257,6 @@
         private TreeView directoryTreeView;
         private TextBox previewMarkdownLinks;
         private GroupBox groupBox1;
-        private Button buttonRefresh;
         private Button buttonCopy;
         private Label labelMessage;
         private GroupBox groupBox2;

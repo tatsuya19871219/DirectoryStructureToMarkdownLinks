@@ -52,6 +52,10 @@ namespace DirectoryStructureToMarkdownLinks
             _directoryTree.Expand(_autoExpandDepth);
             //_directoryTree.Expand();
 
+            // Scroll to top
+            directoryTreeView.SelectedNode = _directoryTree.RootNode;
+            directoryTreeView.Focus();
+
             // Tree Go Up enable?
             if (_directoryTree.TryGetParentDir(out var _)) buttonGoUp.Enabled = true;
             else buttonGoUp.Enabled = false;
@@ -116,12 +120,12 @@ namespace DirectoryStructureToMarkdownLinks
             if (previewMarkdownLinks.Text != "")
             {
                 buttonCopy.Enabled = true;
-                buttonRefresh.Enabled = true;
+                //buttonRefresh.Enabled = true;
             }
             else
             {
                 buttonCopy.Enabled = false;
-                buttonRefresh.Enabled = false;
+                //buttonRefresh.Enabled = false;
             }
 
             buttonCopy.ForeColor = Color.Blue;
@@ -135,7 +139,7 @@ namespace DirectoryStructureToMarkdownLinks
             // Left mouse button is clicked 
             if (e.Button == MouseButtons.Left) _directoryTree.Click(node);
 
-            if (!_directoryTree.IsFileItem(node)) buttonGoDown.Enabled = true;
+            if (!_directoryTree.IsFileItem(node) & _directoryTree.RootNode != node) buttonGoDown.Enabled = true;
             else buttonGoDown.Enabled = false;
         }
 
@@ -155,12 +159,12 @@ namespace DirectoryStructureToMarkdownLinks
 
             ShowActionMessageForWhile("Copied!");
         }
-        private void buttonRefresh_Click(object sender, EventArgs e)
-        {
-            //UpdateMarkdownList(directoryTreeView.Nodes[0]);
+        //private void buttonRefresh_Click(object sender, EventArgs e)
+        //{
+        //    //UpdateMarkdownList(directoryTreeView.Nodes[0]);
 
-            ShowActionMessageForWhile("Refreshed!");
-        }   
+        //    ShowActionMessageForWhile("Refreshed!");
+        //}   
         private void buttonGoUp_Click(object sender, EventArgs e)
         {
             if (_directoryTree.TryGetParentDir(out string newRootdir))
