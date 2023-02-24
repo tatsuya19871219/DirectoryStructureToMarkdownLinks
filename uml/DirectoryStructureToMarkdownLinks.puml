@@ -1,0 +1,132 @@
+@startuml ClassDiagram
+class SettingKeys <<static>>
+{
+}
+note left of SettingKeys
+    Keys of properties here
+end note
+
+SettingsManager --> SettingKeys
+class SettingsManager
+{
+'{static} - instance : SettingsManager
+{static} + Current : SettingsManager
+' + this[key : string] : object as PropertyIndexer
+- setting : Properties.Settings {read only}
+- keys : List<string> {read only}
+- types : Dictionary<string, Type> {read only}
+- SettingsManager
++ Get<T>(key : string) : T
++ Set<T>(key : string, value : T) : void
++ Save() : void
++ Reset() : void
+}
+' note left of SettingsManager::PropertyIndexer
+'     Indexer of property
+' end note
+
+' AppForm -up-|> Form
+' SettingsForm -up-|> Form
+' class Form << (F, #00ffff) >>
+' {
+'     '
+' }
+
+AppForm --> DirectoryTree
+AppForm --> MarkdownLinks
+AppForm --> SettingsManager
+class AppForm << (F, #00ffff) >>
+{
+    - directoryTree : DirectoryTree
+    - markdownLinks : MarkdownLinks
+    - manager : SettingsManager {read only}
+    '
+    + AppForm()
+    - OpenNewDirectory() : void
+    - MoveToDirectory(fullpath : string) : void
+
+}
+
+SettingsForm --> SettingsManager
+SettingsForm --> ListViewEditor
+class SettingsForm << (F, #00ffff) >>
+{
+    - manager : SettingsManager {read only}
+    '
+    + SettingsForm()
+    - LoadSettings() : void
+    - SaveSettings() : bool
+}
+
+DirectoryTree --> SettingsManager
+DirectoryTree --> ListRegex
+class DirectoryTree
+{
+    - rootpath : string {read only}
+    - tree : TreeNode {read only}
+    - dummy : string {read only}
+    - securityDummy : string {read only}
+    - clickedDirNode : TreeNode?
+    '
+    - manager : SettingsManager {read only}
+    '
+    - ignoreDirs : StringCollection
+    - ignoreFiles : StringCollection
+    '
+    + RootNode : TreeNode {read only}
+    '
+    + DirectoryTree(rootpath : string, treeView : TreeView)
+    - BindTreeView(treeView : TreeView) : void
+    + Append(node : TreeNode, depth : int) : void
+    + Expand(depth : int) : void
+    + Expand(parentNode : TreeNode, depth : int) : void
+    + Collapse(node : TreeNode) : void
+    + Click(node : TreeNode) : void
+    + TryGetOarentDir(dir : out string) : bool
+    + TryGetSelectedDir(dir : out string) : bool
+    + Check(node : TreeNode) : void
+    + Uncheck(node : TreeNode) : void
+    - CheckAllChildren(parentNode : TreeNode) : void
+    - UncheckAllChildren(parentNode : TreeNode) : void
+    - CheckAllAncestors(node : TreeNode) : void
+    + HasReadme()
+    - HasReadme(tree : TreeNode)
+}
+
+MarkdownLinks --> DirectoryTree
+class MarkdownLinks
+{
+    - tabwidth : int {read only}
+    - tree : DirectoryTree {read only}
+
+    + MarkdownLinks(tree : DirectoryTree)
+    + Generate() : List<string>
+    - StoreMarkdownLinks(tree : TreeNode, list : List<string>) : void
+    - GetRelativeLink(node : TreeNode) : string
+}
+
+
+class ListViewEditor
+{
+    - addButton : Button {read only}
+    - removeButton : Button {read only}
+    - listView : ListView {read only}
+    '
+    - placeholder : string {read only}
+    - selectedItem : ListViewItem?
+    '
+    + ListViewEditor(listView : ListView, addButton : Button, removeButton : Button)
+    + Set(collection : StringCollection?) : void
+    + Get() : StringCollection
+}
+
+
+class ListRegex
+{
+    - regexes : List<Regex> {read only}
+
+    + ListRegex(collection : StringCollection)
+    + Contains(key : string) : bool
+}
+
+@enduml
