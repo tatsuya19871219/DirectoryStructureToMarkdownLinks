@@ -7,7 +7,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
 	<PublishSingleFile>true</PublishSingleFile>
-	<VersionPrefix>0.5.0</VersionPrefix>
+	<VersionPrefix>0.6.0</VersionPrefix>
 	<Authors>tatsuya19871219</Authors>
 	<Copyright>tatsuya19871219</Copyright>
 	<ApplicationIcon>Resources\icon\MarkdownLink.ico</ApplicationIcon>
