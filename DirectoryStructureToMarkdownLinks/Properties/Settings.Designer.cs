@@ -12,7 +12,7 @@ namespace DirectoryStructureToMarkdownLinks.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.4.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.5.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -63,7 +63,8 @@ namespace DirectoryStructureToMarkdownLinks.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsd=\"http://www.w3." +
             "org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n  <s" +
-            "tring>obj</string>\r\n  <string>bin</string>\r\n</ArrayOfString>")]
+            "tring>obj</string>\r\n  <string>bin</string>\r\n  <string>^[.]</string>\r\n</ArrayOfSt" +
+            "ring>")]
         public global::System.Collections.Specialized.StringCollection IgnoreDirs {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["IgnoreDirs"]));
@@ -75,9 +76,13 @@ namespace DirectoryStructureToMarkdownLinks.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsd=\"http://www.w3." +
-            "org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n  <s" +
-            "tring>README.md</string>\r\n</ArrayOfString>")]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<ArrayOfString xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
+  <string>README.md</string>
+  <string>^[.]</string>
+  <string>(.sln)$</string>
+  <string>(.csproj)</string>
+</ArrayOfString>")]
         public global::System.Collections.Specialized.StringCollection IgnoreFiles {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["IgnoreFiles"]));

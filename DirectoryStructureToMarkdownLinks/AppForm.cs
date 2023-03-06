@@ -50,6 +50,9 @@ namespace DirectoryStructureToMarkdownLinks
             _directoryTree.Expand(_autoExpandDepth);
             //_directoryTree.Expand();
 
+            // Do auto check here
+
+
             // Scroll to top
             directoryTreeView.SelectedNode = _directoryTree.RootNode;
             directoryTreeView.Focus();

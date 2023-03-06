@@ -43,13 +43,13 @@ namespace DirectoryStructureToMarkdownLinks
 
         public void Append(TreeNode node, int depth = 1)
         {
-            // Is valid node?
+            // Is a valid node?
             if (!IsValidNode(node)) throw new ArgumentException("Unexpected node is given.");
 
-            //// Is File?
+            // Is a File?
             if (IsFileItem(node)) return;
 
-            // Is already append?
+            // Is already appended?
             if (IsAlreadyAppend(node)) return;
 
             node.Nodes.Clear();
@@ -86,6 +86,10 @@ namespace DirectoryStructureToMarkdownLinks
             foreach (var file in files)
             {
                 var name = Path.GetFileName(file);
+
+                DateTime creationTime = File.GetCreationTime(file);
+                DateTime lastAccessTime = File.GetLastAccessTime(file);
+                DateTime lastWriteTime = File.GetLastWriteTime(file);
 
                 node.Nodes.Add(name);
             }

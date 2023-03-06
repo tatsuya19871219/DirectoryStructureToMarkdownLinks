@@ -28,213 +28,206 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.checkedListBoxSettings = new System.Windows.Forms.CheckedListBox();
-            this.labelMaxDepth = new System.Windows.Forms.Label();
-            this.autoCheckMaxDepth = new System.Windows.Forms.NumericUpDown();
-            this.buttonApply = new System.Windows.Forms.Button();
-            this.labelIgnoreDirs = new System.Windows.Forms.Label();
-            this.labelIgnoreFiles = new System.Windows.Forms.Label();
-            this.buttonAddIgnoreDir = new System.Windows.Forms.Button();
-            this.buttonRemoveIgnoreDir = new System.Windows.Forms.Button();
-            this.buttonRemoveIgnoreFile = new System.Windows.Forms.Button();
-            this.buttonAddIgnoreFile = new System.Windows.Forms.Button();
-            this.labelExplaination = new System.Windows.Forms.Label();
-            this.listIgnoreDirs = new System.Windows.Forms.ListView();
-            this.listIgnoreFiles = new System.Windows.Forms.ListView();
-            this.buttonReset = new System.Windows.Forms.Button();
-            this.buttonDefault = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.autoCheckMaxDepth)).BeginInit();
-            this.SuspendLayout();
+            checkedListBoxSettings = new CheckedListBox();
+            labelMaxDepth = new Label();
+            autoCheckMaxDepth = new NumericUpDown();
+            buttonApply = new Button();
+            labelIgnoreDirs = new Label();
+            labelIgnoreFiles = new Label();
+            buttonAddIgnoreDir = new Button();
+            buttonRemoveIgnoreDir = new Button();
+            buttonRemoveIgnoreFile = new Button();
+            buttonAddIgnoreFile = new Button();
+            labelExplaination = new Label();
+            listIgnoreDirs = new ListView();
+            listIgnoreFiles = new ListView();
+            buttonReset = new Button();
+            buttonDefault = new Button();
+            ((System.ComponentModel.ISupportInitialize)autoCheckMaxDepth).BeginInit();
+            SuspendLayout();
             // 
             // checkedListBoxSettings
             // 
-            this.checkedListBoxSettings.BackColor = System.Drawing.SystemColors.Control;
-            this.checkedListBoxSettings.Font = new System.Drawing.Font("Yu Gothic UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.checkedListBoxSettings.FormattingEnabled = true;
-            this.checkedListBoxSettings.Items.AddRange(new object[] {
-            "Checked list here"});
-            this.checkedListBoxSettings.Location = new System.Drawing.Point(39, 229);
-            this.checkedListBoxSettings.Name = "checkedListBoxSettings";
-            this.checkedListBoxSettings.Size = new System.Drawing.Size(385, 52);
-            this.checkedListBoxSettings.TabIndex = 0;
+            checkedListBoxSettings.BackColor = SystemColors.Control;
+            checkedListBoxSettings.Font = new Font("Yu Gothic UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            checkedListBoxSettings.FormattingEnabled = true;
+            checkedListBoxSettings.Items.AddRange(new object[] { "Checked list here" });
+            checkedListBoxSettings.Location = new Point(39, 229);
+            checkedListBoxSettings.Name = "checkedListBoxSettings";
+            checkedListBoxSettings.Size = new Size(385, 40);
+            checkedListBoxSettings.TabIndex = 0;
             // 
             // labelMaxDepth
             // 
-            this.labelMaxDepth.AutoSize = true;
-            this.labelMaxDepth.Font = new System.Drawing.Font("Yu Gothic UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelMaxDepth.Location = new System.Drawing.Point(57, 298);
-            this.labelMaxDepth.Name = "labelMaxDepth";
-            this.labelMaxDepth.Size = new System.Drawing.Size(123, 15);
-            this.labelMaxDepth.TabIndex = 1;
-            this.labelMaxDepth.Text = "AutoCheck MaxDepth";
+            labelMaxDepth.AutoSize = true;
+            labelMaxDepth.Font = new Font("Yu Gothic UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            labelMaxDepth.Location = new Point(57, 298);
+            labelMaxDepth.Name = "labelMaxDepth";
+            labelMaxDepth.Size = new Size(123, 15);
+            labelMaxDepth.TabIndex = 1;
+            labelMaxDepth.Text = "AutoCheck MaxDepth";
             // 
             // autoCheckMaxDepth
             // 
-            this.autoCheckMaxDepth.Font = new System.Drawing.Font("Yu Gothic UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.autoCheckMaxDepth.Location = new System.Drawing.Point(186, 296);
-            this.autoCheckMaxDepth.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.autoCheckMaxDepth.Name = "autoCheckMaxDepth";
-            this.autoCheckMaxDepth.Size = new System.Drawing.Size(42, 23);
-            this.autoCheckMaxDepth.TabIndex = 2;
+            autoCheckMaxDepth.Font = new Font("Yu Gothic UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            autoCheckMaxDepth.Location = new Point(186, 296);
+            autoCheckMaxDepth.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            autoCheckMaxDepth.Name = "autoCheckMaxDepth";
+            autoCheckMaxDepth.Size = new Size(42, 23);
+            autoCheckMaxDepth.TabIndex = 2;
             // 
             // buttonApply
             // 
-            this.buttonApply.AutoSize = true;
-            this.buttonApply.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.buttonApply.Location = new System.Drawing.Point(369, 353);
-            this.buttonApply.Name = "buttonApply";
-            this.buttonApply.Size = new System.Drawing.Size(75, 31);
-            this.buttonApply.TabIndex = 3;
-            this.buttonApply.Text = "Apply";
-            this.buttonApply.UseVisualStyleBackColor = true;
-            this.buttonApply.Click += new System.EventHandler(this.buttonApply_Click);
+            buttonApply.AutoSize = true;
+            buttonApply.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            buttonApply.Location = new Point(369, 353);
+            buttonApply.Name = "buttonApply";
+            buttonApply.Size = new Size(75, 31);
+            buttonApply.TabIndex = 3;
+            buttonApply.Text = "Apply";
+            buttonApply.UseVisualStyleBackColor = true;
+            buttonApply.Click += buttonApply_Click;
             // 
             // labelIgnoreDirs
             // 
-            this.labelIgnoreDirs.AutoSize = true;
-            this.labelIgnoreDirs.Font = new System.Drawing.Font("Yu Gothic UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelIgnoreDirs.Location = new System.Drawing.Point(48, 78);
-            this.labelIgnoreDirs.Name = "labelIgnoreDirs";
-            this.labelIgnoreDirs.Size = new System.Drawing.Size(102, 15);
-            this.labelIgnoreDirs.TabIndex = 4;
-            this.labelIgnoreDirs.Text = "Ignore Directories";
+            labelIgnoreDirs.AutoSize = true;
+            labelIgnoreDirs.Font = new Font("Yu Gothic UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelIgnoreDirs.Location = new Point(48, 78);
+            labelIgnoreDirs.Name = "labelIgnoreDirs";
+            labelIgnoreDirs.Size = new Size(102, 15);
+            labelIgnoreDirs.TabIndex = 4;
+            labelIgnoreDirs.Text = "Ignore Directories";
             // 
             // labelIgnoreFiles
             // 
-            this.labelIgnoreFiles.AutoSize = true;
-            this.labelIgnoreFiles.Font = new System.Drawing.Font("Yu Gothic UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelIgnoreFiles.Location = new System.Drawing.Point(263, 78);
-            this.labelIgnoreFiles.Name = "labelIgnoreFiles";
-            this.labelIgnoreFiles.Size = new System.Drawing.Size(68, 15);
-            this.labelIgnoreFiles.TabIndex = 5;
-            this.labelIgnoreFiles.Text = "Ignore Files";
+            labelIgnoreFiles.AutoSize = true;
+            labelIgnoreFiles.Font = new Font("Yu Gothic UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelIgnoreFiles.Location = new Point(263, 78);
+            labelIgnoreFiles.Name = "labelIgnoreFiles";
+            labelIgnoreFiles.Size = new Size(68, 15);
+            labelIgnoreFiles.TabIndex = 5;
+            labelIgnoreFiles.Text = "Ignore Files";
             // 
             // buttonAddIgnoreDir
             // 
-            this.buttonAddIgnoreDir.Location = new System.Drawing.Point(48, 179);
-            this.buttonAddIgnoreDir.Name = "buttonAddIgnoreDir";
-            this.buttonAddIgnoreDir.Size = new System.Drawing.Size(75, 23);
-            this.buttonAddIgnoreDir.TabIndex = 7;
-            this.buttonAddIgnoreDir.Text = "Add";
-            this.buttonAddIgnoreDir.UseVisualStyleBackColor = true;
+            buttonAddIgnoreDir.Location = new Point(48, 179);
+            buttonAddIgnoreDir.Name = "buttonAddIgnoreDir";
+            buttonAddIgnoreDir.Size = new Size(75, 23);
+            buttonAddIgnoreDir.TabIndex = 7;
+            buttonAddIgnoreDir.Text = "Add";
+            buttonAddIgnoreDir.UseVisualStyleBackColor = true;
             // 
             // buttonRemoveIgnoreDir
             // 
-            this.buttonRemoveIgnoreDir.Location = new System.Drawing.Point(129, 179);
-            this.buttonRemoveIgnoreDir.Name = "buttonRemoveIgnoreDir";
-            this.buttonRemoveIgnoreDir.Size = new System.Drawing.Size(75, 23);
-            this.buttonRemoveIgnoreDir.TabIndex = 8;
-            this.buttonRemoveIgnoreDir.Text = "Remove";
-            this.buttonRemoveIgnoreDir.UseVisualStyleBackColor = true;
+            buttonRemoveIgnoreDir.Location = new Point(129, 179);
+            buttonRemoveIgnoreDir.Name = "buttonRemoveIgnoreDir";
+            buttonRemoveIgnoreDir.Size = new Size(75, 23);
+            buttonRemoveIgnoreDir.TabIndex = 8;
+            buttonRemoveIgnoreDir.Text = "Remove";
+            buttonRemoveIgnoreDir.UseVisualStyleBackColor = true;
             // 
             // buttonRemoveIgnoreFile
             // 
-            this.buttonRemoveIgnoreFile.Location = new System.Drawing.Point(344, 179);
-            this.buttonRemoveIgnoreFile.Name = "buttonRemoveIgnoreFile";
-            this.buttonRemoveIgnoreFile.Size = new System.Drawing.Size(75, 23);
-            this.buttonRemoveIgnoreFile.TabIndex = 11;
-            this.buttonRemoveIgnoreFile.Text = "Remove";
-            this.buttonRemoveIgnoreFile.UseVisualStyleBackColor = true;
+            buttonRemoveIgnoreFile.Location = new Point(344, 179);
+            buttonRemoveIgnoreFile.Name = "buttonRemoveIgnoreFile";
+            buttonRemoveIgnoreFile.Size = new Size(75, 23);
+            buttonRemoveIgnoreFile.TabIndex = 11;
+            buttonRemoveIgnoreFile.Text = "Remove";
+            buttonRemoveIgnoreFile.UseVisualStyleBackColor = true;
             // 
             // buttonAddIgnoreFile
             // 
-            this.buttonAddIgnoreFile.Location = new System.Drawing.Point(263, 179);
-            this.buttonAddIgnoreFile.Name = "buttonAddIgnoreFile";
-            this.buttonAddIgnoreFile.Size = new System.Drawing.Size(75, 23);
-            this.buttonAddIgnoreFile.TabIndex = 10;
-            this.buttonAddIgnoreFile.Text = "Add";
-            this.buttonAddIgnoreFile.UseVisualStyleBackColor = true;
+            buttonAddIgnoreFile.Location = new Point(263, 179);
+            buttonAddIgnoreFile.Name = "buttonAddIgnoreFile";
+            buttonAddIgnoreFile.Size = new Size(75, 23);
+            buttonAddIgnoreFile.TabIndex = 10;
+            buttonAddIgnoreFile.Text = "Add";
+            buttonAddIgnoreFile.UseVisualStyleBackColor = true;
             // 
             // labelExplaination
             // 
-            this.labelExplaination.AutoSize = true;
-            this.labelExplaination.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
-            this.labelExplaination.Location = new System.Drawing.Point(29, 18);
-            this.labelExplaination.Name = "labelExplaination";
-            this.labelExplaination.Size = new System.Drawing.Size(415, 42);
-            this.labelExplaination.TabIndex = 13;
-            this.labelExplaination.Text = "The program ignores  files/dirs matches the following lists.\r\n You can still expa" +
-    "nd and/or check them manually.";
+            labelExplaination.AutoSize = true;
+            labelExplaination.Font = new Font("Yu Gothic UI", 12F, FontStyle.Underline, GraphicsUnit.Point);
+            labelExplaination.Location = new Point(29, 18);
+            labelExplaination.Name = "labelExplaination";
+            labelExplaination.Size = new Size(415, 42);
+            labelExplaination.TabIndex = 13;
+            labelExplaination.Text = "The program ignores  files/dirs matches the following lists.\r\n You can still expand and/or check them manually.";
             // 
             // listIgnoreDirs
             // 
-            this.listIgnoreDirs.Font = new System.Drawing.Font("Yu Gothic UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.listIgnoreDirs.LabelEdit = true;
-            this.listIgnoreDirs.LabelWrap = false;
-            this.listIgnoreDirs.Location = new System.Drawing.Point(48, 96);
-            this.listIgnoreDirs.Name = "listIgnoreDirs";
-            this.listIgnoreDirs.Size = new System.Drawing.Size(156, 77);
-            this.listIgnoreDirs.TabIndex = 14;
-            this.listIgnoreDirs.TileSize = new System.Drawing.Size(150, 15);
-            this.listIgnoreDirs.UseCompatibleStateImageBehavior = false;
-            this.listIgnoreDirs.View = System.Windows.Forms.View.Tile;
+            listIgnoreDirs.Font = new Font("Yu Gothic UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            listIgnoreDirs.LabelEdit = true;
+            listIgnoreDirs.LabelWrap = false;
+            listIgnoreDirs.Location = new Point(48, 96);
+            listIgnoreDirs.Name = "listIgnoreDirs";
+            listIgnoreDirs.Size = new Size(156, 77);
+            listIgnoreDirs.TabIndex = 14;
+            listIgnoreDirs.TileSize = new Size(150, 15);
+            listIgnoreDirs.UseCompatibleStateImageBehavior = false;
+            listIgnoreDirs.View = View.Tile;
             // 
             // listIgnoreFiles
             // 
-            this.listIgnoreFiles.LabelEdit = true;
-            this.listIgnoreFiles.LabelWrap = false;
-            this.listIgnoreFiles.Location = new System.Drawing.Point(263, 96);
-            this.listIgnoreFiles.Name = "listIgnoreFiles";
-            this.listIgnoreFiles.Size = new System.Drawing.Size(156, 77);
-            this.listIgnoreFiles.TabIndex = 15;
-            this.listIgnoreFiles.TileSize = new System.Drawing.Size(150, 15);
-            this.listIgnoreFiles.UseCompatibleStateImageBehavior = false;
-            this.listIgnoreFiles.View = System.Windows.Forms.View.Tile;
+            listIgnoreFiles.LabelEdit = true;
+            listIgnoreFiles.LabelWrap = false;
+            listIgnoreFiles.Location = new Point(263, 96);
+            listIgnoreFiles.Name = "listIgnoreFiles";
+            listIgnoreFiles.Size = new Size(156, 77);
+            listIgnoreFiles.TabIndex = 15;
+            listIgnoreFiles.TileSize = new Size(150, 15);
+            listIgnoreFiles.UseCompatibleStateImageBehavior = false;
+            listIgnoreFiles.View = View.Tile;
             // 
             // buttonReset
             // 
-            this.buttonReset.AutoSize = true;
-            this.buttonReset.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.buttonReset.Location = new System.Drawing.Point(205, 353);
-            this.buttonReset.Name = "buttonReset";
-            this.buttonReset.Size = new System.Drawing.Size(75, 31);
-            this.buttonReset.TabIndex = 16;
-            this.buttonReset.Text = "Reset";
-            this.buttonReset.UseVisualStyleBackColor = true;
-            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
+            buttonReset.AutoSize = true;
+            buttonReset.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            buttonReset.Location = new Point(288, 353);
+            buttonReset.Name = "buttonReset";
+            buttonReset.Size = new Size(75, 31);
+            buttonReset.TabIndex = 16;
+            buttonReset.Text = "Reset";
+            buttonReset.UseVisualStyleBackColor = true;
+            buttonReset.Click += buttonReset_Click;
             // 
             // buttonDefault
             // 
-            this.buttonDefault.AutoSize = true;
-            this.buttonDefault.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.buttonDefault.Location = new System.Drawing.Point(12, 353);
-            this.buttonDefault.Name = "buttonDefault";
-            this.buttonDefault.Size = new System.Drawing.Size(75, 31);
-            this.buttonDefault.TabIndex = 17;
-            this.buttonDefault.Text = "Default";
-            this.buttonDefault.UseVisualStyleBackColor = true;
-            this.buttonDefault.Click += new System.EventHandler(this.buttonDefault_Click);
+            buttonDefault.AutoSize = true;
+            buttonDefault.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            buttonDefault.Location = new Point(12, 353);
+            buttonDefault.Name = "buttonDefault";
+            buttonDefault.Size = new Size(75, 31);
+            buttonDefault.TabIndex = 17;
+            buttonDefault.Text = "Default";
+            buttonDefault.UseVisualStyleBackColor = true;
+            buttonDefault.Click += buttonDefault_Click;
             // 
             // SettingsForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(456, 393);
-            this.Controls.Add(this.buttonDefault);
-            this.Controls.Add(this.buttonReset);
-            this.Controls.Add(this.listIgnoreFiles);
-            this.Controls.Add(this.listIgnoreDirs);
-            this.Controls.Add(this.labelExplaination);
-            this.Controls.Add(this.buttonRemoveIgnoreFile);
-            this.Controls.Add(this.buttonAddIgnoreFile);
-            this.Controls.Add(this.buttonRemoveIgnoreDir);
-            this.Controls.Add(this.buttonAddIgnoreDir);
-            this.Controls.Add(this.labelIgnoreFiles);
-            this.Controls.Add(this.labelIgnoreDirs);
-            this.Controls.Add(this.buttonApply);
-            this.Controls.Add(this.autoCheckMaxDepth);
-            this.Controls.Add(this.labelMaxDepth);
-            this.Controls.Add(this.checkedListBoxSettings);
-            this.Name = "SettingsForm";
-            this.Text = "Settings";
-            ((System.ComponentModel.ISupportInitialize)(this.autoCheckMaxDepth)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(456, 393);
+            Controls.Add(buttonDefault);
+            Controls.Add(buttonReset);
+            Controls.Add(listIgnoreFiles);
+            Controls.Add(listIgnoreDirs);
+            Controls.Add(labelExplaination);
+            Controls.Add(buttonRemoveIgnoreFile);
+            Controls.Add(buttonAddIgnoreFile);
+            Controls.Add(buttonRemoveIgnoreDir);
+            Controls.Add(buttonAddIgnoreDir);
+            Controls.Add(labelIgnoreFiles);
+            Controls.Add(labelIgnoreDirs);
+            Controls.Add(buttonApply);
+            Controls.Add(autoCheckMaxDepth);
+            Controls.Add(labelMaxDepth);
+            Controls.Add(checkedListBoxSettings);
+            Name = "SettingsForm";
+            Text = "Settings";
+            ((System.ComponentModel.ISupportInitialize)autoCheckMaxDepth).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
